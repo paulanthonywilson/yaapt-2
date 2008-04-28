@@ -3,7 +3,8 @@
 
 table.stripy  {
 	border:1px solid #ccc;
-	border-collapse:collapse;
+	border-collapse:collapse; 
+	width: 100%;
 }
 
 table.stripy td {

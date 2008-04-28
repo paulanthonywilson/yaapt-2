@@ -109,7 +109,9 @@ form#new_story div.field textarea, form#new_story div.field  input{
 #story_list_table .priority, #story_list_table .estimate{ 
 	text-align: right; 
 	padding-right: 10px;
-}   
+} 
+
+  
 
 
 

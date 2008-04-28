@@ -1,0 +1,6 @@
+<% form_for @story, :class=>'fred' do |f|%>   
+<%= render :partial=>'form_fields', :locals=>{:f=>f}%>   
+<div>
+<%= f.submit "Update story" %>  
+</div>
+<% end%>  
