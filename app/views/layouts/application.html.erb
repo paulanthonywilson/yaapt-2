@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Yet another Agile planning tool</title>
+  <%= stylesheet_link_tag  'yaapt', 'fluid', 'table'%> 
+  <%= javascript_include_tag :defaults %>
+
+</head>
+<body>
+<div id="container">
+	<div id="header"> 
+	    <h1><%= link_to "Yaapt", '/'%></h1>
+
+		<h3><%= @title ||=""%></h3>
+
+		<p style="color: green" id="flash_notice"><%= flash[:notice] %></p>
+	</div>
+
+	<div id="nav">
+		<ul>
+			<li><%= link_to "Products ", '#' %></li>
+		</ul>
+	</div>
+
+	<div id="content">
+		<%= yield  %>
+	</div>
+
+	<div id="footer">
+		<p><a href="http://merecomplexities.com" target="_blank">Mere Complexities Limited</a></p>
+	</div>
+</div>
+
+
+</body>
+</html>
