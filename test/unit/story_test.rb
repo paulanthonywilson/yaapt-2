@@ -1,8 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class StoryTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_title_required
+    story = Story.new(:title=>'A title')
+    assert story.valid?
+    story.title = nil
+    assert !story.valid?
   end
+  
 end
