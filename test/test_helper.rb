@@ -5,8 +5,11 @@ require 'test_help'
 class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
-  fixtures :all
-
+  fixtures :all  
+  
+  def self.test(name, &body) 
+    define_method("test #{name}", body)
+  end
 end  
 
 class ActionController::TestCase

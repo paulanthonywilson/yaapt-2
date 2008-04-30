@@ -110,6 +110,10 @@ form#new_story div.field textarea, form#new_story div.field  input{
 	padding-right: 10px;
 } 
 
+.stripy td.unstarted{
+	color : #A70001;
+}
+
   
 
 

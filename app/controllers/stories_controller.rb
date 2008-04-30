@@ -13,9 +13,12 @@ class StoriesController < ApplicationController
 
   def update
     @story = Story.find(params[:id]) 
-    @story.update_attributes(params[:story])  
-    flash[:notice]="Story updated"
-    redirect_to :action=>:index
+    if @story.update_attributes(params[:story])  
+      flash[:notice]="Story updated"
+      redirect_to :action=>:index 
+    else
+      render :action=>:edit
+    end
   end
 
   def create 

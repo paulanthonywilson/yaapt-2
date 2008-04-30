@@ -57,10 +57,13 @@ class StoriesControllerTest < ActionController::TestCase
     assert_select "form#new_story"
     assert_select "#errorExplanation li", :text=>/Title/      
   end  
-  
-  def test_failing_to_edit_a_story_redisplayes_the_edit_form_with_error
 
-    
+  def test_failing_to_edit_a_story_redisplayes_the_edit_form_with_error
+    put :update, :id=>stories(:boil_water), :story=>{:title=>''}
+    assert_equal 'Boil water', stories(:boil_water).reload.title  
+    assert_response :success
+    assert_select "form#edit_story_#{stories(:boil_water).id}"
+
   end
 
 
