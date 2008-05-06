@@ -21,7 +21,7 @@ pre {
 	font-weight: bold;
 }
  
-form div{
+form.input div{
 	background: #5C223F;
 	padding: 5px 20px 30px ;
 }                     
@@ -87,7 +87,7 @@ div.progressBar div.background {
   width: 0%;
 } 
 
-form#new_story div.label {
+form.input div.label {
   width:100px; 
   float:left;
 } 
@@ -97,7 +97,7 @@ form#new_story div.label {
 }
 
 
-form#new_story div.field textarea, form#new_story div.field  input{
+form.input div.field textarea, form.input div.field  input{
   width:500px;  
   margin-bottom: 10px;
 } 
@@ -110,8 +110,16 @@ form#new_story div.field textarea, form#new_story div.field  input{
 	padding-right: 10px;
 } 
 
-.stripy td.unstarted{
+.unstarted{
 	color : #A70001;
+}
+
+.in_progress{
+	color : #DCCF1E;
+}
+
+.done{
+	color: #2C9932;
 }
 
   

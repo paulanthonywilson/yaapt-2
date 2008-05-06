@@ -25,7 +25,8 @@ class StoryTest < ActiveSupport::TestCase
     assert !story.valid? 
     
     story.status = 'nearly_done'
-    assert !story.valid?     
+    assert !story.valid? 
+    assert_equal ["Status can only be unstarted in progress or done"], story.errors.full_messages    
     
   end
   

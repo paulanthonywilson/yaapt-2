@@ -2,7 +2,14 @@ boil_water:
   title: Boil water 
   body: Boling water is needed to make tea.
   estimate: 0.5
+  status: unstarted
 edit_story:
   title: Warm pot
   body: To pretend to be of high taste, warm the pot to pretend it makes better ta.
   estimate: 1
+  status: in_progress
+add_tea:
+  title: Add tea 
+  estimate: 1
+  body: tea tea tea
+  status: done

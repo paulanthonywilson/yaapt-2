@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :stories
+  map.resources :stories, :member=>{:advance=>:put}
 
   # The priority is based upon order of creation: first created -> highest priority.
 

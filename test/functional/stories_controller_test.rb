@@ -92,6 +92,27 @@ class StoriesControllerTest < ActionController::TestCase
     get :index
     assert_select "a[href='#{edit_story_path(stories(:boil_water))}']" , nil, "Edit link for story 'add story'"
   end 
+  
+  def test_stories_have_advance_button
+    get :index
+    assert_select "a[href='#{advance_story_path(stories(:boil_water))}']" , nil, "Advance link for story"
+  end
 
+  def test_edit_form_has_status_dropdown
+    get :edit, :id=>stories(:boil_water)
+    assert_status_dropdown
+  end
+  def test_new_form_has_status_dropdown
+    get :new
+    assert_status_dropdown
+  end
 
+  def assert_status_dropdown
+    assert_select 'select#story_status' do
+      assert_select 'option[value="unstarted"]'
+      assert_select 'option[value="in_progress"]'
+      assert_select 'option[value="done"]'
+    end
+  end
+  
 end
