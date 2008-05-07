@@ -21,6 +21,19 @@ class StoriesController < ApplicationController
     end
   end
 
+  def advance
+    @story = Story.find(params[:id]) 
+    if @story.advance!
+      flash[:notice]='Story advanced'
+    else
+      flash[:notice]='Story not advanced'
+    end
+    respond_to do |fmt|
+      fmt.html {redirect_to :action=>:index}
+      fmt.js
+    end
+  end
+
   def create 
     @story = Story.new(params[:story])
     if @story.save

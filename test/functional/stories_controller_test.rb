@@ -95,16 +95,30 @@ class StoriesControllerTest < ActionController::TestCase
   
   def test_stories_have_advance_button
     get :index
-    assert_select "a[href='#{advance_story_path(stories(:boil_water))}']" , nil, "Advance link for story"
+    assert_select "a img[alt='advance']" , nil, "Advance link for story"
   end
 
   def test_edit_form_has_status_dropdown
     get :edit, :id=>stories(:boil_water)
     assert_status_dropdown
   end
+  
   def test_new_form_has_status_dropdown
     get :new
     assert_status_dropdown
+  end
+  
+  def test_advancing_a_story
+    put :advance, :id=>stories(:boil_water)
+    assert_redirect_with_flash ({:action=>:index}), 'Story advanced'
+    assert_equal 'in_progress', stories(:boil_water).reload.status
+  end
+  
+  def test_failing_to_advance_a_story
+    stories(:boil_water).update_attributes(:status=>'done')
+    put :advance, :id=>stories(:boil_water)
+    assert_redirect_with_flash ({:action=>:index}), 'Story not advanced'
+    assert_equal 'done', stories(:boil_water).reload.status
   end
 
   def assert_status_dropdown

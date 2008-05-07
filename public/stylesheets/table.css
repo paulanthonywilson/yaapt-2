@@ -16,7 +16,9 @@ table.stripy td {
 table.stripy td a{
 	color: #120774;
 	display:block;
+	float:left;
 }
+
 
 table.stripy tr.odd {
 	background: #E0B577;
