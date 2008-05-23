@@ -6,8 +6,8 @@
       <td><%= h story.title %></td>
       <td><%= h story.body %></td>
       <td><%= h story.estimate %></td>
-      <td id='<%=dom_id(story, "status")%>'><span  class='<%=h story.status%>'><%= h story.status %></span></td>
-      <td style="width:25px;"><%= link_to_remote image_tag('advance.png', :alt=>'advance'), {:url=>advance_story_path(story), :method => :put} %></td>
+      <td id='<%=dom_id(story, "status")%>'><%= story_status story%></td>
+      <td style="width:25px;" id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></td>
       <td><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></td>
       <td><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></td>
     <% end%>

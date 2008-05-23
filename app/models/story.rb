@@ -2,6 +2,8 @@ class Story < ActiveRecord::Base
   validates_presence_of :title
   validates_inclusion_of :status, :in=>['unstarted', 'in_progress', 'done'], :message=>'can only be unstarted in progress or done'
 
+  belongs_to :release
+
   # Advance to the next status and save, returning true if save is succesful. If there is no valid next status do nothing
   # and return false
   def advance!

@@ -1,2 +1,5 @@
-page[dom_id(@story, 'status')].replace_html "<span class='#{h @story.status}'>#{@story.status}</span>"  
-page[dom_id(@story, 'status')].visual_effect :highlight, :startcolor => "#88ff88", :endcolor => "#114411"
+page[dom_id(@story, 'status')]\
+  .replace_html(story_status(@story))\
+  .visual_effect(:highlight, :startcolor => "#88ff88", :endcolor => "#114411")
+page[dom_id(@story, 'advance_button')]\
+  .replace_html(advance_button(@story))

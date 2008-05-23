@@ -2,25 +2,22 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class StoriesControllerTest < ActionController::TestCase
 
-  def test_displaying_the_new_form
-    get :new
-    assert_response :success  
+  a_new_form_should_be_displayed_with do
     assert_select "form#new_story" do  
       assert_select "#story_title"
       assert_select "#story_body"
       assert_select "#story_estimate"
     end
-  end  
+  end
 
-  def test_new_form_contains_no_errors
-    get :new   
-    assert_select '#errorExplanation', :count=>0
-  end  
+  there_should_be_no_errors_for :get, :new
+  
+  
 
   def test_displaying_the_edit_form
-    get :edit, :id=>stories(:boil_water)
-    assert_response :success  
-    assert_select "form#edit_story_#{stories(:boil_water).id}" do  
+    get :edit, :id=>stories(:make_tea)
+    assert_response :success 
+    assert_select "form#edit_story_#{stories(:make_tea).id}" do  
       assert_select "#story_title"                                                   
       assert_select "#story_body"
       assert_select "#story_estimate"
@@ -35,7 +32,7 @@ class StoriesControllerTest < ActionController::TestCase
   end  
 
   def test_updating_a_story_contents    
-    story = stories(:boil_water)
+    story = stories(:make_tea)
     put :update, :id=>story, :story=>{:title=>'Get in hot water'}
     assert_redirect_with_flash({:action=>:index } , 'Story updated')
     assert_equal "Get in hot water", story.reload.title
@@ -44,7 +41,7 @@ class StoriesControllerTest < ActionController::TestCase
 
   def test_destroying_a_story   
     assert_difference("Story.count", -1) do
-      put :destroy, :id=>stories(:boil_water)
+      put :destroy, :id=>stories(:make_tea)
     end
     assert_redirect_with_flash({:action=>:index } , 'Story removed')
   end  
@@ -59,11 +56,10 @@ class StoriesControllerTest < ActionController::TestCase
   end  
 
   def test_failing_to_edit_a_story_redisplayes_the_edit_form_with_error
-    put :update, :id=>stories(:boil_water), :story=>{:title=>''}
-    assert_equal 'Boil water', stories(:boil_water).reload.title  
+    put :update, :id=>stories(:make_tea), :story=>{:title=>''}
+    assert_equal 'Make a pot of tea', stories(:make_tea).reload.title  
     assert_response :success
-    assert_select "form#edit_story_#{stories(:boil_water).id}"
-
+    assert_select "form#edit_story_#{stories(:make_tea).id}"
   end
 
 
@@ -85,41 +81,43 @@ class StoriesControllerTest < ActionController::TestCase
 
   def test_index_stories_have_a_delete_link   
     get :index
-    assert_select "a[href='#{story_path(stories(:boil_water))}'] img[alt='destroy']" , nil, "Destroy link for story 'add story'"
+    assert_select "a[href='#{story_path(stories(:make_tea))}'] img[alt='destroy']" , nil, "Destroy link for story 'add story'"
   end
 
   def test_index_stories_have_an_edit_link   
     get :index
-    assert_select "a[href='#{edit_story_path(stories(:boil_water))}']" , nil, "Edit link for story 'add story'"
+    assert_select "a[href='#{edit_story_path(stories(:make_tea))}']" , nil, "Edit link for story 'add story'"
   end 
-  
+
   def test_stories_have_advance_button
     get :index
     assert_select "a img[alt='advance']" , nil, "Advance link for story"
   end
 
   def test_edit_form_has_status_dropdown
-    get :edit, :id=>stories(:boil_water)
+    get :edit, :id=>stories(:make_tea)
     assert_status_dropdown
   end
-  
+
   def test_new_form_has_status_dropdown
     get :new
     assert_status_dropdown
   end
-  
+
   def test_advancing_a_story
-    put :advance, :id=>stories(:boil_water)
-    assert_redirect_with_flash ({:action=>:index}), 'Story advanced'
-    assert_equal 'in_progress', stories(:boil_water).reload.status
+    put :advance, :id=>stories(:make_tea)
+    assert_equal 'in_progress', stories(:make_tea).reload.status
+    assert_match /update.*in_progress/, @response.body
   end
-  
+
   def test_failing_to_advance_a_story
-    stories(:boil_water).update_attributes(:status=>'done')
-    put :advance, :id=>stories(:boil_water)
-    assert_redirect_with_flash ({:action=>:index}), 'Story not advanced'
-    assert_equal 'done', stories(:boil_water).reload.status
+    stories(:make_tea).update_attributes(:status=>'done')
+    put :advance, :id=>stories(:make_tea)
+    assert_equal 'done', stories(:make_tea).reload.status
+    assert_match /alert.*fail/i, @response.body
+
   end
+
 
   def assert_status_dropdown
     assert_select 'select#story_status' do
@@ -128,5 +126,5 @@ class StoriesControllerTest < ActionController::TestCase
       assert_select 'option[value="done"]'
     end
   end
-  
+
 end

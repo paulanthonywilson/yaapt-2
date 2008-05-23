@@ -1,7 +1,1 @@
-<%= errors_for :story %> 
-<% form_for @story, :class=>'input' do |f|%>   
-<%= render :partial=>'form_fields', :locals=>{:f=>f}%>   
-<div>
-<%= f.submit "Update story" %>  
-</div>
-<% end%>  
+<%= render :partial=>'form'%>

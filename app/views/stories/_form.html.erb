@@ -1,3 +1,5 @@
+<%= errors_for :story %> 
+<% form_for @story, :class=>'input' do |f|%>   
 <div>
 	<%= f.label :title, "Title"%>
 	<%= f.text_field :title, :size=>80  %>  
@@ -14,3 +16,7 @@
 	<%= f.label :status, "Status"%>
 	<%= select(:story, :status, ['unstarted', ['in progress', 'in_progress'], 'done'])%>
 </div>
+<div>
+<%= f.submit submit_text(@story)%>  
+</div>
+<% end%>  

@@ -1,15 +1,27 @@
-boil_water:
-  title: Boil water 
-  body: Boling water is needed to make tea.
+make_tea:
+  title: Make a pot of tea 
+  body: As  a tea drinker I want a cup of tea in order that I may be refreshed
   estimate: 0.5
   status: unstarted
-edit_story:
-  title: Warm pot
-  body: To pretend to be of high taste, warm the pot to pretend it makes better ta.
+  release: tea_and_biscuits
+make_coffee:
+  title: Brew some coffee 
+  body: Mmmm coffee
   estimate: 1
   status: in_progress
-add_tea:
-  title: Add tea 
+  release: tea_and_biscuits
+biscuits:
+  title: Lay out some biscuits
   estimate: 1
-  body: tea tea tea
+  body: yum yum yum
   status: done
+  release: tea_and_biscuits
+slaughter_ox:
+  title: Slaughter Ox
+  estimate: 3
+  body: Kill the cow
+mix_cocktails:
+  title: Mix cocktails
+  estimate: 2.5
+  body: Shake shake stir
+  release: dinner_party
