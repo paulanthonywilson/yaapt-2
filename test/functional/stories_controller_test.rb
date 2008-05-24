@@ -2,6 +2,11 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class StoriesControllerTest < ActionController::TestCase
 
+  
+  a_new_form_is_displayed_with_fields 'stories', %w(title body estimate)
+  
+
+
   a_new_form_should_be_displayed_with do
     assert_select "form#new_story" do  
       assert_select "#story_title"

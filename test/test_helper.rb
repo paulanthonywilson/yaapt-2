@@ -26,13 +26,30 @@ class ActionController::TestCase
   end
 
   class << self
+    define_method "test_blah" do
+      def test_cont
+        assert_equal "stories", self.class.name
+      end
+
+    end
+
+    def a_new_form_is_displayed_with_fields(model_name, fields)
+      define_method "test a new form is displayed with" do
+        get :new
+        assert_response :success
+        assert_select '#errorExplanation', :count=>0
+      end
+
+    end
+
     def a_new_form_should_be_displayed_with(&block)
+
       define_method "test_a_new_form_is_displayed" do
         get :new
         assert_response :success  
         instance_eval(&block)
       end
-      
+
       def there_should_be_no_errors_for(method, *args)
         define_method "test no errors for '#{method}' with '#{args.inspect}'" do
           send method, args
