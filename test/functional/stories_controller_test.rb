@@ -2,111 +2,38 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class StoriesControllerTest < ActionController::TestCase
 
-  
-  a_new_form_is_displayed_with_fields 'stories', %w(title body estimate)
-  
+  def setup
+    super
+    @story = stories(:make_tea)
+  end
 
 
-  a_new_form_should_be_displayed_with do
-    assert_select "form#new_story" do  
-      assert_select "#story_title"
-      assert_select "#story_body"
-      assert_select "#story_estimate"
+
+  should_be_restful do |resource|
+    resource.create.params = { :title=>'A new story', :body=>'as a developer I want this test to pass', :estimate=>1}
+    resource.update.params = { :title=>'Get in hot water' }
+    resource.actions.delete :show 
+    resource.formats = [:html]
+
+    resource.update.redirect  = 'stories_path'
+    resource.create.redirect = 'stories_path'
+  end
+
+  assert_contentful_get_for %w(index new edit), "{:id=>stories(:make_tea)}"
+
+  context "advance link on index" do
+
+    setup do
+      get :index
     end
-  end
 
-  there_should_be_no_errors_for :get, :new
-  
-  
-
-  def test_displaying_the_edit_form
-    get :edit, :id=>stories(:make_tea)
-    assert_response :success 
-    assert_select "form#edit_story_#{stories(:make_tea).id}" do  
-      assert_select "#story_title"                                                   
-      assert_select "#story_body"
-      assert_select "#story_estimate"
+    should "be present for unfinished stories" do
+      assert_advance_button_count_for_story 1, :make_tea
     end
-  end
 
-  def test_a_new_story_is_saved
-    assert_difference("Story.count") do
-      post :create, :story=>{:title=>'A new story', :body=>'as a developer I want this test to pass', :estimate=>1}
+    should "be absent for done stories" do
+      assert_advance_button_count_for_story 0, :biscuits
     end
-    assert_redirect_with_flash({:action=>:index } , 'Story added')
-  end  
-
-  def test_updating_a_story_contents    
-    story = stories(:make_tea)
-    put :update, :id=>story, :story=>{:title=>'Get in hot water'}
-    assert_redirect_with_flash({:action=>:index } , 'Story updated')
-    assert_equal "Get in hot water", story.reload.title
-  end
-
-
-  def test_destroying_a_story   
-    assert_difference("Story.count", -1) do
-      put :destroy, :id=>stories(:make_tea)
-    end
-    assert_redirect_with_flash({:action=>:index } , 'Story removed')
-  end  
-
-  def test_failing_to_add_a_story_redisplays_new_story_form_with_error
-    assert_difference("Story.count", 0) do 
-      post :create, :story=>{:title=>''}
-    end
-    assert_response :success
-    assert_select "form#new_story"
-    assert_select "#errorExplanation li", :text=>/Title/      
-  end  
-
-  def test_failing_to_edit_a_story_redisplayes_the_edit_form_with_error
-    put :update, :id=>stories(:make_tea), :story=>{:title=>''}
-    assert_equal 'Make a pot of tea', stories(:make_tea).reload.title  
-    assert_response :success
-    assert_select "form#edit_story_#{stories(:make_tea).id}"
-  end
-
-
-  def test_redirected_to_index_after_save
-    post :create, :story=>{:title=>'A new story', :body=>'as a developer I want this test to pass', :estimate=>1}
-    assert_redirect_with_flash({:action=>:index } , 'Story added')
-  end 
-
-  def test_all_stories_displayed_by_index
-    get :index
-    assert_response :success
-    assert_select '.story', :count=>Story.count
-  end  
-
-  def test_there_is_a_link_to_a_new_story_on_the_index_page
-    get :index  
-    assert_link new_story_path
-  end  
-
-  def test_index_stories_have_a_delete_link   
-    get :index
-    assert_select "a[href='#{story_path(stories(:make_tea))}'] img[alt='destroy']" , nil, "Destroy link for story 'add story'"
-  end
-
-  def test_index_stories_have_an_edit_link   
-    get :index
-    assert_select "a[href='#{edit_story_path(stories(:make_tea))}']" , nil, "Edit link for story 'add story'"
-  end 
-
-  def test_stories_have_advance_button
-    get :index
-    assert_select "a img[alt='advance']" , nil, "Advance link for story"
-  end
-
-  def test_edit_form_has_status_dropdown
-    get :edit, :id=>stories(:make_tea)
-    assert_status_dropdown
-  end
-
-  def test_new_form_has_status_dropdown
-    get :new
-    assert_status_dropdown
   end
 
   def test_advancing_a_story
@@ -120,16 +47,9 @@ class StoriesControllerTest < ActionController::TestCase
     put :advance, :id=>stories(:make_tea)
     assert_equal 'done', stories(:make_tea).reload.status
     assert_match /alert.*fail/i, @response.body
-
   end
 
-
-  def assert_status_dropdown
-    assert_select 'select#story_status' do
-      assert_select 'option[value="unstarted"]'
-      assert_select 'option[value="in_progress"]'
-      assert_select 'option[value="done"]'
-    end
+  def assert_advance_button_count_for_story(expected_count, story)
+    assert_select "#story_#{stories(story).id} a img[alt='advance']" , {:count=>expected_count}, "Advance link for story"
   end
-
 end

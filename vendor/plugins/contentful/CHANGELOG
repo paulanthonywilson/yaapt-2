@@ -1,0 +1,531 @@
+Sat Jan 26 02:18:09 GMT 2008
+
+Finally got around to fixing the May 27 issue - changed and expected
+ files for XML content now have '.xml' extensions rather than '.html'.
+
+I note that a possible use for this would be contentful coverage of
+ apps that handle both XML and HTML formats. At the moment, if both
+ change at the same time, their *.to_diff files will fight. This
+ ought to be fixable by using *.format.to_diff, but need to think
+ through how various shell globs are affected. Also perhaps I should
+ add similar support for further formats e.g. rjs, json?
+
+Changed functionality, so I updated version to 0.82.
+
+
+Sat Dec 15 21:14:23 GMT 2007
+
+Reset to the vanilla :controller/:action/:id route when running plugin
+ tests; they depend on it.
+
+
+Sat Dec 15 17:26:26 GMT 2007
+
+Prefer to use Rails 2.0 ActionController::view_paths, fall back to
+ template_root to keep older versions happy.
+Published as version 0.81.
+
+
+Sat Jun 30 17:40:28 BST 2007
+
+Added link to this CHANGELOG from documentation.
+
+
+Sun May 27 02:05:56 BST 2007
+
+Cope with even more variation in relevant header - now just needs
+to end in case-insensitive 'type'.
+
+Note that the *.html ending for expected/changed files is anomalous
+for this xml case. Coping with this variation in Rake is more work
+than I can be bothered with right now, so I'm going to live with it.
+
+Changed functionality, so I updated version to 0.8.
+
+
+Sun May 27 01:28:39 BST 2007
+
+Cope with different cases in Content-Type header.
+
+
+Sun May 27 01:16:52 BST 2007
+
+Using Contentful with my new feedsum project showed up that it wasn't
+aware of the different validity rules for XML - certain tags like '<link>'
+in feed xml would cause it to complain about (genuinely) invalid HTML.
+
+Now the HTML::Document sets the relevant flag correctly when the
+Content-Type of the response under consideration contains 'xml'.
+
+
+Sun Apr 29 23:48:05 BST 2007
+
+Thinking about where Contentful is most immediately useful led me to
+wire some (untested... going to be tricky) auto-apply stuff. If you put
+CONTENTFUL_AUTO = true
+in your config/environment.rb, then assert_contentful is applied on
+teardown in every testcase that produces a non-empty @response and
+does not do its own Contentful asserting.
+
+So now it's *very* easy to use Contentful as a refactoring vise, with
+as much coverage as your test suite exercises. Updated version and docs
+(since we're now live, I guess that will be implicit henceforth.)
+
+
+Thu Apr 19 02:49:18 BST 2007
+
+Just tried on another WinXP laptop in preparation for demo tomorrow.
+Found that Contentful didn't work with the version of Pathname on the
+machine, on which Ruby 1.8.4 was installed. Uninstalling and moving to
+Ruby 1.8.5 fixed the issue. Added note to README [platforms].
+
+
+Wed Apr 18 23:48:02 BST 2007
+
+Updated version (now 0.6) to reflect allegedly "ready for beta" status.
+Documented the platforms on which its been tested.
+
+
+Wed Apr 18 23:31:50 BST 2007
+
+Installed MySQL on Windows to check usage on a real (mini) Rails app.
+Found another problem; when running Rake tasks (but not when running
+in irb, script/console, or tests) then Windows picked up a bogus
+definition of Pathname from somewhere.
+
+Added testcase to provoke the bug on Windows. Involved switching RakeTest
+to be a simple Test::Unit::TestCase (which it was always supposed to be,
+rather than a ContentfulTestCase.) Fixed bug by adding an explicit require
+of "pathname".
+
+Sidenote: Recently, I am quite often seeing a
+> Lost connection to MySQL server during query
+error when running rake test:content on my (original) project back
+here on Ubuntu. I've seen it sometimes with regular non-Contentful
+tests too, so I assume its not my plugin's fault.
+
+
+Fri Apr 13 00:58:53 BST 2007
+
+No, FileUtils.mv is not broken on Windows. (A Google search on the
+problem I was having suggested it was - I believed it because it
+matched my symptom. It was a lie.) Put the rm/cp/rm hack back to mv.
+
+The problem turned out to be Windows not letting you remove a file that
+is still open - Unix is much more forgiving. I was aware of this issue,
+but it took me ages to track the cause down, because Ruby's File.open has
+this (too?) subtle semantics that it closes its file automatically if you
+pass it a block, but not if you don't. Found my culprit (an assert_equal re
+file content) and fixed it. Tests now all pass on Windows.
+
+
+Mon Apr  9 21:00:39 BST 2007
+
+Looks like FileUtils.mv is broken on Windows. (Rubyist seems not to care
+much for Windows. This is a mistake. Be nice to the poor, like Perl was.)
+So we'll try rm then cp then rm instead.
+
+
+Mon Apr  9 19:57:14 BST 2007
+
+More pleasantly still, said page now features a Contentful Bear.
+
+
+Sun Apr  8 15:31:52 BST 2007
+
+The web page at Rubyforge is now generated from the README by running
+'rake site'. That's pleasant.
+
+
+Thu Apr  5 00:32:14 BST 2007
+
+Added a section on the virtues and vises(sic) of content tests to the
+documentation. (It kind of wants to be a blog entry.)
+
+
+Wed Mar 28 23:40:02 BST 2007
+
+Added deliberately terse but complete documentation. No rdoc in code
+as yet; and should I write a tutorial?
+
+
+Wed Mar 28 22:36:30 BST 2007
+
+Properly solved (I believe) the dummy asset id problem. We now fix
+RAILS_ASSET_ID in a monkey-patched TestCase#run rather than during
+initialization w
+hen RAILS_ENV is 'test', This means that test:plugin
+works without setting RAILS_ENV, and that the horrible test:content
+hackery can be removed.
+
+
+Wed Mar 28 00:41:46 BST 2007
+
+Added proper tests of suite-building. Did find one bug, so feel worthy.
+
+Horrible set RAILS_ENV / reload use_dummy_asset_id_when_testing hackery
+to work around the problem that means rake test:plugins doesn't work
+without RAILS_ENV=test. I think railties is broken re Rake test tasks:
+they should set RAILS_ENV='test'!
+
+
+Tue Mar 27 02:05:34 BST 2007
+
+OK, contentful:test (alias test:content) now runs a suite of tests
+based on the contents of test/contentful (or starting subdirectory
+thereof.) All kinds of reflective hackery involved, but I hope the
+important failure cases are covered.
+
+(I still need to add tests to check the content of the built suite.)
+
+I'm also running into sporadic (random? surely not?) MySQL errors
+during the db:test:prepare prerequisite for the task. I have seen this
+before locally and not tracked it down. I'm optimistic it isn't
+something I've broken with my Rakery.
+
+
+Mon Mar 26 00:21:31 BST 2007
+
+Excuse note: busy at work, and a bit blocked on documenting the plugin.
+(Kind of want to do a tutorial/case study, but it's a lot of overhead.)
+Realized that a Rake task to run subsets of contentful tasks would be
+useful. My first few tries at this weren't great - bad designs, and
+bumping against failing to understand the test framework. I have a plan
+now, though.
+
+First part involves factoring out start directories for Rake tasks,
+and better descriptions of directories. When reporting, now use
+Pathname to calculate directories relative to the current one - avoids
+very long absolute paths featuring '..' elements, etc. The diff command
+advised when a test fails is similarly relativised.
+
+Disclaimer: need to check all is well (i.e. tests pass) on Windows and
+Mac platforms. (This needed doing anyway, but now it's just that more
+likely I broke something through my use of filesystem voodoo.)
+
+
+Thu Mar 15 01:56:27 GMT 2007
+
+Implemented select_contentful(selector, optional_label.)
+If optional_label is absent, it uses the selector itself as a label.
+Performs an assert_contentful on the first tag that gets css_selected.
+
+Should avoid the need to check all content on a page when only parts
+of it (e.g. partials within layouts) are of interest.
+
+
+Thu Mar 15 01:55:19 GMT 2007
+
+Factored out assert_passes and assert_fails helpers.
+
+
+Wed Mar 14 02:26:58 GMT 2007
+
+Added test:accept and test:diff shortcuts aliased to contentful: tasks.
+
+
+Wed Mar 14 02:20:34 GMT 2007
+
+Implemented "rake contentful:accept".
+Moves changes to expected, and removes the to_diff files.
+
+
+Wed Mar 14 01:34:13 GMT 2007
+
+Extracted constants (VERSION, BASE_DIRECTORY) to a separate file
+and suppressed some BASE_DIRECTORY redefinition warnings in tests.
+
+Implemented a fully tested "rake contentful:diff".
+
+Basically, it runs (overridable) diff on *.to_diff pairs for every
+*changed.html it finds under test/contentful, or under the working
+directory if it is a subdirectory of that base directory.
+A bit fiddly, lots of code on unusual edge cases that shouldn't occur,
+and I missed my Rails extensions (e.g. starts_with?) when writing plain
+Ruby for Rake. Turned out OK though.
+
+
+Tue Mar 13 00:59:48 GMT 2007
+
+BASE_DIRECTORY is now a simple global rather than being calculated
+in a private method of AssertionHelper. This allows a little less
+test indirection, and makes it accessible to ContentfulTaskHelper.
+
+
+Mon Mar 12 01:32:28 GMT 2007
+
+Extracted DiffHelper in preparation for executing diffs as part of
+Rake tasks.
+
+ 
+Sun Mar 11 23:05:49 GMT 2007
+
+Extracted some DRY assert_contentful_passes and assert_contentful_fails
+test helpers.
+
+
+Sun Mar 11 22:47:21 GMT 2007
+
+Realized I hadn't put in anything to deal with tests within namespaces
+(i.e. modules.) I haven't used them, but people do. Turns out the
+existing code does exactly the right thing, because String#underscore
+does the right '/' thing with the '::' separator, and I've used mkdir_p
+in the right places. Added a test to make sure this accidental goodness
+persists.
+
+
+Sat Mar 10 00:40:38 GMT 2007
+
+Changed some naming conventions. Contentful files for FooTest#test_bar 
+are now written into a foo/bar directory rather than being in foo/
+with a bar prefix. Expected file is now foo/bar/expected.html, or
+foo/bar/label.expected.html for labelled assertions. The temporary
+files are foo/bar/changed.html, and foo/bar/(expected|changed).to_diff
+One directory per test method should make for easier globbing in raked
+and manual diff and accept tasks, and I'm happy about the symmetry of
+the expected/changed terminology.
+
+I also managed to DRY up the code a little. For example, AssertionHelper
+now uses @contentful_labels.last when building the above filenames, which
+are manufactured in individual methods. Also at the cost of a little less
+explicitness, we no longer have to include the name of contentful tests
+in their fixture setup and output expectations. In better style, I also
+removed redundant curlies "#{@foo}" => "#@foo", add use File.join more.
+
+
+Fri Mar  9 22:25:28 GMT 2007
+
+Yesterday involved some painfully slow work getting a rake task to run
+within a test. Having got it to work I'm happy to just let RakeTest
+check that the Rails app that plugs us in can see the tasks through
+rake. I'll test their behaviour more directly in unit tests of the (as
+yet empty) contentful_task_helper that will house their implementation.
+
+
+Thu Mar  8 01:19:39 GMT 2007
+
+Pulled out a ContentfulTestCase parent class and split the contentful_test
+up into five different testcases.
+
+
+Thu Mar  8 00:01:43 GMT 2007
+
+The instructions given on a fail now use the DIFF environment variable
+if it is set. Also further tests of the instructional content added.
+
+
+Wed Mar  7 23:08:11 GMT 2007
+
+assert_contentful now takes an optional HTML::Node argument to check
+instead of the response body.
+
+This allows idioms such as assert_contentful css_select(selector...)
+or assert_contentful find_tag(tag...). I may try to provide helpers
+to wrap such calls a little more nicely (default identifiers,
+better handling of failed selects, etc.) A shame the SelectorAssertions
+are coded in such a huge function manner; would be nice to plug Contenful
+checks in as "equality" parameters, but I don't think this patches easily.
+
+
+Wed Mar  7 21:42:37 GMT 2007
+
+Complain if the client uses assert_contentful twice within a test
+method but does not supply a distinct label for each use. This is
+intended for e.g. integration tests. It's still OK to use no label
+when just using it once as is usual in a functional test.
+
+Also removed some unnecessary view fixture setup - we can rely on
+having an empty @response.body if we don't request a view - and
+simplified some of the expected content.
+
+
+Wed Mar  7 00:41:31 GMT 2007
+
+Filled in some other methods in the ContentfulGeneration object
+I pass to add_fault, to match the interface of Error and Failure.
+(This is just in case some other runners e.g. GUI ones assume it.)
+
+
+Wed Mar  7 00:25:29 GMT 2007
+
+Now wire into the Test::Unit machinery to notify the runner when
+we've automatically generated expected content. Works very well,
+although hooking into "add_fault" in TestRunner feels a bit strange:
+think this hook could more sensibly be called e.g. "add_notification".
+
+Automated tests aren't as in depth as one might want; the checking
+of the new test output was mostly done by eye.
+
+
+Tue Mar  6 02:01:46 GMT 2007
+
+Tags with multiple attributes in to_diff files now sort these
+attributes and split them onto separate lines, making for easier
+diffs and fixing unwanted diffs caused by indeterminacy of
+iteration order in the HTML::Node attribute hash and hence to_s.
+
+
+Tue Mar  6 00:15:17 GMT 2007
+
+Temporary files are now named foo.to_diff and foo.changed.to_diff
+rather than simply foo and foo.changed.
+This means that one can target these files using a glob that should
+work in both DOS and Unix: "diff foo.*to_diff" or even "diff foo.*f".
+Failing test now suggests the first of these.
+
+
+Mon Mar  5 23:05:45 GMT 2007
+
+Better handling of invalid HTML in generated content (fail test,
+report the problem) or in expected content (raise exception, report
+the problem.)
+
+
+Mon Mar  5 21:50:24 GMT 2007
+
+Factored out test prelude.
+Extended testing of HTML parsing and put it into a separate test case.
+
+
+Sun Mar  4 17:28:03 GMT 2007
+
+Like any decent plugin, Contentful was extracted from a real project.
+(Does not necessarily mean this is a decent plugin, of course.)
+Here is its prehistory, from that project's own change log:
+
+> Sunday 2007.03.04
+> Contentful is now an externally hosted plugin.
+> (Shouldn't need to write much more about in this changelog, then.)
+[...]
+> Thursday 2007.03.01
+> Made Contentful accord with my planned design:
+>  - assert_contentful method (takes optional identifier) 
+>   ! might want to generate defaults for multiple identifiers?
+>  - expected content is normalized but without extra newlines
+>  - on fail, we write changed content, and diffable versions of
+>    changed and expected with the usual extra newlines
+>  - on pass we remove the three extra files
+>  - if the expected is missing, it is generated
+>   ! currently, silently - probably this should be noisier
+>  - the files for FooTest::test_bar sit in test/contentful/Foo/bar*
+> Updated [edit: my app's] tests to the new file conventions and other changes.
+> Next, plan to use the plugin in anger: migrate depot to Markaby.
+[...]
+> Thursday 2007.03.01
+> First version of the contentful plugin. Sets up a runtime bugfix of
+> HTML::Document parsing, and the dummy asset id, including tests for
+> these, which includes slurping in a test environment and rendering
+> a stub view.
+> Main assert is still called "regress" and works on same format files
+> in hardcoded test/functional directory - this is a halfway house.
+> Is implemented within a Contentful::AssertionHelper mixin, though.
+> Could not work out how to enforce test environment when running the
+> test:plugins task - "rake test:plugins RAILS_ENV=test" is required.
+> Testing within the plugin using e.g. "rake test" works fine.
+[...]
+> Monday 2007.02.26
+> Spent most time thinking about the design of my plugin - now named
+> Contentful - and experimenting with a stub plugin, Rake, etc.
+> Changed method of clobbering asset ids. I now set the environment
+> variable directly, and only do so when running in test environment.
+> Detached regression stuff from SelectorAssertions, now its directly
+> in TestCase. Removed unused parameter - now use @response.body directly.
+[...]
+> Sunday 2007.02.25
+> Moved regression machinery into SelectorAssertions - I hope to write
+> e.g. regress_select sometime soon. This kicked off some work to make
+> the machinery easier to use. You can now call 'regress(name)' from
+> any functional test and it'll just work - no longer do you need to
+> require regression_enabled, mixin RegressionEnabled, define @test_file
+> or supply @response.body. Nice.
+[...]
+> Sunday 2007.02.25
+> My patch of Tag.to_s interferes with a non-standard but plausible use
+> made by the "sanitize" text helper, which reads and outputs tags one
+> at a time. A longer but more correct fix is to insert an empty
+> text element between tags instead when parsing an HTML::Document. I've
+> made this same fix in Edge rails and submitted a patch (#7641); however
+> I continue to monkey-patch here so that users of RegressionEnabled
+> won't need to be on Edge.
+[...]
+> Saturday 2007.02.24
+> Regression tests are now less fragile. I now persist the HTML content
+> as normalised by HTML::Document, which means that case and attribute
+> order don't matter. Whitespace near tags is significant again, as it
+> should be. Extra newlines are written out and ignored back in so that
+> the text diff is readable.
+> All simple enough. However, there's something else going on: I had
+> to fix what looks like a dumb bug in HTML::Node.to_s. The version that
+> comes with current Rails drops closing tags from childless nodes:
+> >> HTML::Document.new('<tag></tag>').root.to_s
+> #> "<tag>"
+> I checked HTML specs and W3 validation, and this is totally bogus.
+> Empty nodes are fine. You can normalize them ("<tag />") if you really
+> want to, but you don't have to.
+> So I monkey-patched HTML::Tag.to_s. I guess I should submit a proper
+> bug report to Rails actionpack. HTML::Document is used for assert_select,
+> for which this bug is harmless. The classes are in vendor/html-scanner;
+> a recent commit to Edge added some "much-needed html-scanner tests" but
+> trunk/actionpack/test/controller/html-scanner/tag_node_test.rb misses
+> this case.
+[...]
+> Sunday 2007.02.18
+> I've been looking into improving and/or productizing my HTML
+> regression test tricks. Seems there's a plug-in there I'd use even
+> if no-one else would. Ideas include:
+>  - better text diffs (real vs trivial changes?)
+>  - rake up some of the change management
+>  - create html diff views?
+> First step: replaced grotty "css?X" gsub hack with a proper
+> monkey-patching of ActionView::Helpers::AssetTagHelpers::rails_asset_id
+> Note I did consider leaving these as genuine diffs - after all, you
+> are (probably) including an asset with changed content. But the fact
+> that it uses local mtimes means that we would have different generated
+> content (and hence test expectations) across separate local checkouts
+> of the same code. That's no good. Perhaps MD5 or similar checksum of
+> file content would be better still, but this sounds expensive?
+[...]
+> Saturday 2007.02.03
+> Mostly to see how much it hurt, I pushed use of Markaby into the
+> element helpers themselves. [...] More leaning on RegressionEnabled.
+[...]
+> Saturday 2007.01.20
+> All rhtml files have now been replaced with mabs.
+[...]
+> Friday 2007.01.19
+> As mentioned a fortnight ago, I want to use a builder in views - eRB is ugly
+> percent tag soup.
+> Considered the ultra-brief HAML, but it's punctuation heavy and quite arcane.
+> So, I installed Markaby (into vendor/plugins) and converted across the
+> page views from rhtml to mab. [...] The RegressionEnabled tests were
+> *fantastic* help - really glad about these, must blog it.
+[...]
+> Friday 2007.01.19
+> Rails 1.2 is finally out (well, 1.2.1.) Use it.
+[...]
+> Friday 2007.01.05
+> I'm toying with the idea of switching to a builder rather than a
+> template for html page content - mostly as a learning experiment.
+> In preparation, added regression tests for the page controller
+> html content. I'd forgotten details of using RegressionEnabled over
+> three months, but it was pleasingly easy to pick up and use. I wonder
+> if it can be made even more so, and if there's a potential plug-in.
+[...]
+> Monday 2006.10.09
+> Fixed RegressionEnabled to ignore scaffold.css timestamp changes.
+[...]
+> Sunday 2006.10.08
+> Extracted RegressionEnabled as a mixin for functional tests.
+[...]
+> Friday 2006.10.06
+> Refined regression tests a little so that they do not break
+> under typical whitespace changes.
+[...]
+> Tuesday 2006.10.03
+> Added HTML/dom equality regression file check for list/new/edit content.
+
+
+Sun Mar  4 17:24:51 GMT 2007
+
+Added this changelog. This is partly a check of whether I can
+commit from this svn:externals copy of the code. [edit: I can!]

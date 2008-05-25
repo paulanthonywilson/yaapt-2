@@ -31,7 +31,7 @@ class StoriesController < ApplicationController
   def create 
     @story = Story.new(params[:story])
     if @story.save
-      flash[:notice]="Story added"
+      flash[:notice]="Story created"
       redirect_to :action=>:index  
     else 
       render :action=>:new
