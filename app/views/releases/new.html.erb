@@ -1,15 +1,1 @@
-<%= errors_for :release%>
-<% form_for @release, :class=>'input' do |f|%>
-<div>
-	<%= f.label :name, "Name"%>
-	<%= f.text_field :name, :size=>80  %>  
-</div>
-<div>
-	<%= f.label :release_date, "Release Date"%>
-	<%= f.date_select :release_date %>  
-</div>
-<div>
-	<br/>
-	<%= f.submit submit_text(@release)%>  
-</div>
-<% end%>
+<%= render :partial=>'form'%>

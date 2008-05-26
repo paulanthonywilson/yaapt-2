@@ -3,6 +3,20 @@ class ReleasesController < ApplicationController
     @release = Release.new
   end
 
+  def edit
+    @release = Release.find(params[:id])
+  end
+
+  def update
+    @release = Release.find(params[:id])
+    if @release.update_attributes(params[:release])
+      flash[:notice] = "Release updated"
+      redirect_to release_stories_path(@release)
+    else
+      render :action=>:edit
+    end
+  end
+
   def create
     @release = Release.new(params[:release])
     if @release.save
