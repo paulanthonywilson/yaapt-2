@@ -1,18 +1,35 @@
 require File.dirname(__FILE__) + '/../test_helper'
+require 'flexmock/test_unit'
 
 class ReleasesControllerTest < ActionController::TestCase
-  def test_new_release_form_shown
-    get :new
-    assert_response :success  
-    assert_select "form#new_release" do  
-      assert_select "#release_name"
-      assert_select "#release_release_date_1i"
+
+  context "sunny day resources" do  
+    setup do
+      @release=releases(:tea_and_biscuits)
+    end
+
+    should_be_restful do |resource|
+      resource.create.params = {:name=>"a release", :release_date=>'2007-03-11'}
+      resource.update.params = {:name=>'oh something else'}
+      resource.actions = [:new, :create]
+
+      resource.create.redirect = "release_stories_path(@release)"
     end
   end
   
-  def xtest_save_new_form
-    post :create, :release=>{:release_date=>'2007-03-11'}
+  context "failure to save" do
+    setup do
+      @release = flexmock(Release.new, "release", :save=>false)
+      flexmock(Release, :new=>@release)
+    end
     
+    should "redisplay new form" do
+      post :create, :release=>{:name=>"a release", :release_date=>'2007-03-11'}
+      assert_response :success
+      assert_template 'new'
+      assert_equal @release, assigns(:release)
+    end
   end
+
 
 end
