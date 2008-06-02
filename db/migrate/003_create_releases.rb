@@ -3,7 +3,7 @@ class CreateReleases < ActiveRecord::Migration
     create_table :releases do |t|
       t.string :name
       t.date :release_date
-      t.boolean :done
+      t.boolean :done, :default=>false
 
       t.timestamps
     end

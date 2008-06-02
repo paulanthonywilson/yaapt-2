@@ -9,6 +9,10 @@
 	<%= f.date_select :release_date %>  
 </div>
 <div>
+	<%= f.label :done, "Done" %>
+	<%= f.check_box :done %>
+	</div>
+<div>
 	<br/>
 	<%= f.submit submit_text(@release)%>  
 </div>

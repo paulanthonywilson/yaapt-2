@@ -3,6 +3,9 @@ require 'flexmock/test_unit'
 
 class StoriesHelperTest < ActiveSupport::TestCase  
   include StoriesHelper
+  include ActionView::Helpers::AssetTagHelper
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::RecordIdentificationHelper
   
   def test_story_status
     story = Story.new(:id=>25, :status=>'unstarted')
@@ -11,7 +14,7 @@ class StoriesHelperTest < ActiveSupport::TestCase
   
   def test_advance_button
     story = Story.new(:id=>25, :status=>'unstarted')
-    assert advance_button(story)[:link_to_remote]
+    assert_match /link_to_remote\(.*advance.*\)/, advance_button(story)
   end
   
   def test_advance_button_not_shown_for_done_stories
@@ -26,12 +29,52 @@ class StoriesHelperTest < ActiveSupport::TestCase
     assert_equal 'Update story', submit_text(story)
   end
   
+  context "release description cell" do
+    
+    setup do
+      @story = flexmock(Story.new, :id=>55, :release=>flexmock(:description=>"release description", :id=>111))     
+    end
+    
+    should "be nil unless release is not nil" do
+     assert !release_description_cell(@story, flexmock('story'))
+     assert release_description_cell(@story, nil)      
+    end
+    
+    should "be empty cell if story does not belong to release" do
+      assert_equal "<td></td>", release_description_cell(flexmock(:release=>nil), nil)
+    end
+    
+    should "be identified as a release cell if story belongs to a release" do
+      assert_include? release_description_cell(@story, nil), dom_id(@story, 'release')
+    end
+
+    should "link to the release" do
+      assert_include? release_description_cell(@story, nil), release_path(@story.release)
+    end
+    should "describe the release" do
+      assert_include? release_description_cell(@story, nil), @story.release.description
+    end
+    
+  end
+  
   def h(escape_me)
     "h'd(#{escape_me})"
   end
   
-  def method_missing(method, *args)
-    {method=>args}
+  def advance_story_path(story)
+    "advance_story_path(#{story.id})"
+  end
+ 
+  
+  def link_to(name, options={}, htmloptions=nil)
+    "link_to(#{name}, #{options.inspect}, #{htmloptions.inspect})"
   end
   
+  def release_path(release)
+    "release_path(#{release.id})"
+  end
+  
+  def link_to_remote(name, options={}, htmloptions=nil)
+    "link_to_remote(#{name}, #{options.inspect}, #{htmloptions.inspect})"
+  end
 end

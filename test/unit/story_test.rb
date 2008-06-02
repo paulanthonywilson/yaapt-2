@@ -1,48 +1,36 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class StoryTest < ActiveSupport::TestCase
-  def test_title_required
-    story = Story.new(:title=>'A title')
-    assert story.valid?
-    story.title = nil
-    assert !story.valid?
+
+  should_require_attributes :title
+
+  should_allow_values_for :status, 'unstarted', 'in_progress', 'done'
+  should_not_allow_values_for :status, 'fish', 'nearly_done', '', :message=>/not included/
+
+  context "advancing a story" do
+    setup do
+      @story = Story.create(:title=>'abc')
+    end
+
+    def should_go_from_to(from, to)
+      should "go from #{from} to #{to}" do
+        @story.status = from
+        @story.advance!
+        assert_equal to, @story.status
+      end
+    end
+
+    should_go_from_to('unstarted', 'in_progress')
+    should_go_from_to('in_progress', 'done')
   end 
 
-  test "stories may be unstarted, in-progress, or done" do
-    story = Story.create(:title=>'hello')
-    assert_equal 'unstarted', story.status
-    assert story.valid?
-
-    story.status = 'in_progress'
-    assert story.valid?
-    assert_equal 'in_progress', story.status
-
-    story.status = 'done'
-    assert story.valid? 
-    assert_equal 'done', story.status
-
-    story.status = ''
-    assert !story.valid? 
-
-    story.status = 'nearly_done'
-    assert !story.valid? 
-    assert_equal ["Status can only be unstarted in progress or done"], story.errors.full_messages    
-
-  end
-
-  test "unstarted stories advance to in_progress then to done" do
-    story = Story.create(:title=>'abc')
-    assert_equal 'unstarted', story.status
-    assert story.advance!
-    assert_equal 'in_progress', story.status
-    assert story.advance!
-    assert_equal 'done', story.reload.status   
-  end
-
-  test "advancing a done story is a no-op" do
+  test "advancing a done story should be a no-op" do
     story = Story.create(:title=>'x', :status=>'done')
     assert !story.advance!
     assert_equal 'done', story.reload.status   
-  end    
+  end  
 
+  test "unassigned stories should not be associated with a release" do
+    assert_equal Story.find(:all).reject(&:release_id), Story.unassigned
+  end
 end

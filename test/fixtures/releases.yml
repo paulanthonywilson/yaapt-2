@@ -6,3 +6,12 @@ tea_and_biscuits:
 dinner_party:
   name: Dinner party
   release_date: 2008-06-21
+breakfast:
+  name: Breakfast
+  release_date: 2008-05-20
+  done: true
+midnight_snack:
+  name: Midnight snack
+  release_date: 2008-05-23
+  done: true
+    

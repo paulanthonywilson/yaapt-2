@@ -1,0 +1,616 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+<html
+ lang="en"
+ xmlns="http://www.w3.org/1999/xhtml"
+>
+
+
+<head>
+
+  
+<meta
+ content="text/html;charset=UTF-8"
+ equiv="content-type"
+/>
+
+  
+<title>
+Yet another Agile planning tool
+</title>
+
+  
+<link
+ href="/stylesheets/yaapt.css?DUMMY_ASSET_ID"
+ media="screen"
+ rel="stylesheet"
+ type="text/css"
+/>
+
+
+<link
+ href="/stylesheets/fluid.css?DUMMY_ASSET_ID"
+ media="screen"
+ rel="stylesheet"
+ type="text/css"
+/>
+
+
+<link
+ href="/stylesheets/table.css?DUMMY_ASSET_ID"
+ media="screen"
+ rel="stylesheet"
+ type="text/css"
+/>
+ 
+  
+<script
+ src="/javascripts/prototype.js?DUMMY_ASSET_ID"
+ type="text/javascript"
+>
+
+</script>
+
+
+<script
+ src="/javascripts/effects.js?DUMMY_ASSET_ID"
+ type="text/javascript"
+>
+
+</script>
+
+
+<script
+ src="/javascripts/dragdrop.js?DUMMY_ASSET_ID"
+ type="text/javascript"
+>
+
+</script>
+
+
+<script
+ src="/javascripts/controls.js?DUMMY_ASSET_ID"
+ type="text/javascript"
+>
+
+</script>
+
+
+<script
+ src="/javascripts/application.js?DUMMY_ASSET_ID"
+ type="text/javascript"
+>
+
+</script>
+
+
+
+</head>
+
+
+<body>
+
+
+<div id="container">
+
+	
+<div id="header">
+ 
+	    
+<h1>
+
+<a href="/">
+Yaapt
+</a>
+
+</h1>
+
+
+		
+<h3>
+
+</h3>
+
+
+	
+</div>
+
+
+	
+<div id="nav">
+
+		
+<ul>
+
+			
+<li>
+
+<a href="#">
+Products 
+</a>
+
+</li>
+
+		
+</ul>
+
+	
+</div>
+
+
+	
+<div id="content">
+
+		
+<p id="flash_notice">
+
+</p>
+
+		
+<div>
+ 
+
+<a href="/stories/new">
+New story
+</a>
+
+
+</div>
+
+
+<table class="stripy">
+  
+      
+    
+<tr
+ class="story odd"
+ id="story_164352959"
+>
+    
+      
+<td>
+Lay out some biscuits
+</td>
+
+      
+<td>
+yum yum yum
+</td>
+
+      
+<td>
+1
+</td>
+
+      
+<td id="status_story_164352959">
+
+<span class="done">
+done
+</span>
+
+</td>
+
+      
+<td
+ id="advance_button_story_164352959"
+ style="width:25px;"
+>
+
+</td>
+
+      
+<td>
+
+<a href="/stories/164352959/edit">
+
+<img
+ alt="edit"
+ src="/images/edit.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a
+ href="/stories/164352959"
+ onclick="if (confirm('Delete story?')) { var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var m = document.createElement('input'); m.setAttribute('type', 'hidden'); m.setAttribute('name', '_method'); m.setAttribute('value', 'delete'); f.appendChild(m);f.submit(); };return false;"
+>
+
+<img
+ alt="destroy"
+ src="/images/destroy.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+    
+</tr>
+
+      
+    
+<tr
+ class="story even"
+ id="story_345019214"
+>
+    
+      
+<td>
+Mix cocktails
+</td>
+
+      
+<td>
+Shake shake stir
+</td>
+
+      
+<td>
+2
+</td>
+
+      
+<td id="status_story_345019214">
+
+<span class="unstarted">
+unstarted
+</span>
+
+</td>
+
+      
+<td
+ id="advance_button_story_345019214"
+ style="width:25px;"
+>
+
+<a
+ href="#"
+ onclick="new Ajax.Request('/stories/345019214/advance', {asynchronous:true, evalScripts:true, method:'put'}); return false;"
+>
+
+<img
+ alt="advance"
+ src="/images/advance.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a href="/stories/345019214/edit">
+
+<img
+ alt="edit"
+ src="/images/edit.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a
+ href="/stories/345019214"
+ onclick="if (confirm('Delete story?')) { var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var m = document.createElement('input'); m.setAttribute('type', 'hidden'); m.setAttribute('name', '_method'); m.setAttribute('value', 'delete'); f.appendChild(m);f.submit(); };return false;"
+>
+
+<img
+ alt="destroy"
+ src="/images/destroy.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+    
+</tr>
+
+      
+    
+<tr
+ class="story odd"
+ id="story_608172706"
+>
+    
+      
+<td>
+Make a pot of tea
+</td>
+
+      
+<td>
+As  a tea drinker I want a cup of tea in order that I may be refreshed
+</td>
+
+      
+<td>
+0
+</td>
+
+      
+<td id="status_story_608172706">
+
+<span class="unstarted">
+unstarted
+</span>
+
+</td>
+
+      
+<td
+ id="advance_button_story_608172706"
+ style="width:25px;"
+>
+
+<a
+ href="#"
+ onclick="new Ajax.Request('/stories/608172706/advance', {asynchronous:true, evalScripts:true, method:'put'}); return false;"
+>
+
+<img
+ alt="advance"
+ src="/images/advance.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a href="/stories/608172706/edit">
+
+<img
+ alt="edit"
+ src="/images/edit.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a
+ href="/stories/608172706"
+ onclick="if (confirm('Delete story?')) { var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var m = document.createElement('input'); m.setAttribute('type', 'hidden'); m.setAttribute('name', '_method'); m.setAttribute('value', 'delete'); f.appendChild(m);f.submit(); };return false;"
+>
+
+<img
+ alt="destroy"
+ src="/images/destroy.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+    
+</tr>
+
+      
+    
+<tr
+ class="story even"
+ id="story_756361516"
+>
+    
+      
+<td>
+Brew some coffee
+</td>
+
+      
+<td>
+Mmmm coffee
+</td>
+
+      
+<td>
+1
+</td>
+
+      
+<td id="status_story_756361516">
+
+<span class="in_progress">
+in_progress
+</span>
+
+</td>
+
+      
+<td
+ id="advance_button_story_756361516"
+ style="width:25px;"
+>
+
+<a
+ href="#"
+ onclick="new Ajax.Request('/stories/756361516/advance', {asynchronous:true, evalScripts:true, method:'put'}); return false;"
+>
+
+<img
+ alt="advance"
+ src="/images/advance.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a href="/stories/756361516/edit">
+
+<img
+ alt="edit"
+ src="/images/edit.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a
+ href="/stories/756361516"
+ onclick="if (confirm('Delete story?')) { var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var m = document.createElement('input'); m.setAttribute('type', 'hidden'); m.setAttribute('name', '_method'); m.setAttribute('value', 'delete'); f.appendChild(m);f.submit(); };return false;"
+>
+
+<img
+ alt="destroy"
+ src="/images/destroy.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+    
+</tr>
+
+      
+    
+<tr
+ class="story odd"
+ id="story_928457496"
+>
+    
+      
+<td>
+Slaughter Ox
+</td>
+
+      
+<td>
+Kill the cow
+</td>
+
+      
+<td>
+3
+</td>
+
+      
+<td id="status_story_928457496">
+
+<span class="unstarted">
+unstarted
+</span>
+
+</td>
+
+      
+<td
+ id="advance_button_story_928457496"
+ style="width:25px;"
+>
+
+<a
+ href="#"
+ onclick="new Ajax.Request('/stories/928457496/advance', {asynchronous:true, evalScripts:true, method:'put'}); return false;"
+>
+
+<img
+ alt="advance"
+ src="/images/advance.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a href="/stories/928457496/edit">
+
+<img
+ alt="edit"
+ src="/images/edit.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+      
+<td>
+
+<a
+ href="/stories/928457496"
+ onclick="if (confirm('Delete story?')) { var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var m = document.createElement('input'); m.setAttribute('type', 'hidden'); m.setAttribute('name', '_method'); m.setAttribute('value', 'delete'); f.appendChild(m);f.submit(); };return false;"
+>
+
+<img
+ alt="destroy"
+ src="/images/destroy.png?DUMMY_ASSET_ID"
+/>
+
+</a>
+
+</td>
+
+    
+</tr>
+
+  
+
+</table>
+
+
+	
+</div>
+
+
+	
+<div id="footer">
+
+		
+<p>
+
+<a
+ href="http://merecomplexities.com"
+ target="_blank"
+>
+Mere Complexities Limited
+</a>
+
+</p>
+
+	
+</div>
+
+
+</div>
+
+
+
+
+</body>
+
+
+</html>
+

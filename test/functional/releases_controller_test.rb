@@ -18,27 +18,35 @@ class ReleasesControllerTest < ActionController::TestCase
     end
   end
 
-  context "on failing to save" do
+  context "on failing to save a new story" do
     setup do
-      @release = flexmock(Release.new, "release", :save=>false, :update_attributes=>false)
-      flexmock(Release, :new=>@release, :find=>@release)
-    end
-
-    should "redisplay new form" do
+      @release = flexmock(Release.new, "release", :save=>false, :id=>5)
+      flexmock(Release, :new=>@release)
       post :create, :release=>{:name=>"a release", :release_date=>'2007-03-11'}
-      assert_response :success
-      assert_template 'new'
-      assert_equal @release, assigns(:release)
     end
     
-    should "redisplay edit form" do
-      put :update, :id=>@release
+    should "display the new form" do
+      assert_response :success
+      assert_template 'new'
+      assert_equal @release, assigns(:release)      
+    end
+  end
+
+  context "on failing to update a story" do
+    setup do
+      @release = flexmock(Release.new, "release", :save=>false, :update_attributes=>false, :id=>5)
+      flexmock(Release)
+      Release.should_receive(:find).by_default.and_return([])
+      Release.should_receive(:find).with("5").and_return(@release)
+      put :update, :id=>@release.id
+    end
+    
+    should "redisplay the edit form" do
+      put :update, :id=>@release.id
       assert_response :success
       assert_template 'edit'
       assert_equal @release, assigns(:release)
     end
-    
   end
-
 
 end

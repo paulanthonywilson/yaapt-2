@@ -25,3 +25,7 @@ mix_cocktails:
   estimate: 2.5
   body: Shake shake stir
   release: dinner_party
+song_and_dance:
+  title: Song and dance
+  estimate: 12
+  body: Push pineapple, shake a tree

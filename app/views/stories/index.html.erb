@@ -1,5 +1,6 @@
+<%= render :partial=>'release' if @release%>
 <div> 
-<%= link_to "New story", new_story_path %>
+<%= new_story_link @release %>
 </div>
 <table class="stripy">  
   <% @stories.each do |story|%>    
@@ -9,6 +10,7 @@
       <td><%= h story.estimate %></td>
       <td id='<%=dom_id(story, "status")%>'><%= story_status story%></td>
       <td style="width:25px;" id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></td>
+			<%=release_description_cell story, @release%>
       <td><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></td>
       <td><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></td>
     <% end%>

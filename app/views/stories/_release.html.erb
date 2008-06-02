@@ -1,0 +1,6 @@
+<% div_for @release do %>
+
+<h1><%=@release.description%>
+<%=link_to image_tag('edit.png', :alt=>'edit'), edit_release_path(@release)%>
+</h1>
+<% end%>

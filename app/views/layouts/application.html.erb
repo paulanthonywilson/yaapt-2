@@ -18,14 +18,20 @@
 	</div>
 
 	<div id="nav">
+		<h3>Releases</h3>
 		<ul>
-			<li><%= link_to "Products ", '#' %></li>
-		</ul>
+			<%= render :partial=>'/shared/release', :collection=>@todo_releases %>
+		</ul>	
+		<hr/>	
+		<h3>Done releases</h3>
+		<ul>
+			<%= render :partial=>'/shared/release', :collection=>@done_releases %>
+		</ul>		
 	</div>
 
 	<div id="content">
 		<p  id="flash_notice"><%= flash[:notice] %></p>
-		<%= yield  %>
+		<%= yield  :layout %>
 	</div>
 
 	<div id="footer">
