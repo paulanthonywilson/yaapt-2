@@ -18,6 +18,11 @@ class StoriesController < ApplicationController
       Story.find(:all)
     end
   end 
+  
+  def unassigned
+    @stories = Story.unassigned
+    render :action=>:index
+  end
 
   def update
     @story = Story.find(params[:id]) 

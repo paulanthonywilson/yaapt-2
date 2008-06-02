@@ -13,12 +13,17 @@ class StoriesHelperTest < ActiveSupport::TestCase
   end
   
   def test_advance_button
-    story = Story.new(:id=>25, :status=>'unstarted')
+    story = Story.new(:id=>25, :status=>'unstarted', :release_id=>1)
     assert_match /link_to_remote\(.*advance.*\)/, advance_button(story)
   end
   
   def test_advance_button_not_shown_for_done_stories
     story = Story.new(:id=>25, :status=>'done')
+    assert_equal '', advance_button(story)
+  end
+
+  def test_advance_button_not_shown_for_stories_without_release
+    story = Story.new(:id=>25, :status=>'unstarted')
     assert_equal '', advance_button(story)
   end
   

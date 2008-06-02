@@ -22,7 +22,8 @@ class StoriesControllerTest < ActionController::TestCase
 
 
 
- # assert_contentful_get_for %w(index new edit), "{:id=>stories(:make_tea), :release_id=>stories(:make_tea).release}"
+  # assert_contentful_get_for %w(index new edit), "{:id=>stories(:make_tea), :release_id=>stories(:make_tea).release}"
+
 
   context "index with release" do
     setup do
@@ -30,35 +31,35 @@ class StoriesControllerTest < ActionController::TestCase
       get :index, :release_id=> @release
     end
 
-    
+
     should "only list stories for the release" do
       assert_equal @release.stories.size, assigns(:stories).size
     end
-    
+
     should "link to new story for release" do
       assert_link new_release_story_path(@release)
     end
-    
+
     should "contain display release details" do
       assert_select ".release"
     end
-    
+
     should "not have release column" do
       assert_select "td #release_story_#{stories(:make_tea).id}",  :count=>0
     end
-    
+
     should "link to release edit" do
       assert_link edit_release_path(@release)
     end
-    
-    
+
   end
+
   
   context "index without release" do
     setup do
       get :index
     end
-    
+
     should "list all stories" do
       assert_equal Story.find(:all).size, assigns(:stories).size
     end        
@@ -66,19 +67,41 @@ class StoriesControllerTest < ActionController::TestCase
     should "link to new story without release" do
       assert_link new_story_path
     end
-    
+
     should "not contain display of release details at top" do
       assert_select ".release", :count=>0
     end
-    
+
     should "have release column" do
       assert_select "#release_story_#{stories(:make_tea).id}"
     end
-    
-        
   end
-  
-  context "index" do
+
+  context "index for unassigned stories" do
+    
+    setup do
+      get :unassigned
+    end
+
+    should "link to new story without release" do
+      assert_link new_story_path
+    end
+
+    should "not contain display of release details at top" do
+      assert_select ".release", :count=>0
+    end
+
+    should "not have release column" do
+      assert_select "td #release_story_#{stories(:make_tea).id}",  :count=>0
+    end
+
+    should "only list stories for the release" do
+      assert_same_elements Story.unassigned, assigns(:stories)
+    end
+    
+  end
+
+  context "index with release" do
     setup do
       get :index
     end
@@ -86,13 +109,13 @@ class StoriesControllerTest < ActionController::TestCase
     should "contain advance link for unfinished stories" do
       assert_advance_button_count_for_story 1, :make_tea
     end
-    
+
     should "not contain advance link for done stories" do
       assert_advance_button_count_for_story 0, :biscuits
     end
-    
+
   end
-  
+
 
   context "advancing a story" do
     should "update status unstarted to in_progress" do

@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :stories, :member=>{:advance=>:put}, :collection=>{:get=>:unassigned}
+  map.resources :stories, :member=>{:advance=>:put}, :collection=>{:unassigned=>:get}
   map.resources :releases, :has_many=>[:stories]
 
   # The priority is based upon order of creation: first created -> highest priority.
