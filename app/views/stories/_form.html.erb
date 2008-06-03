@@ -18,7 +18,7 @@
 </div>
 <div>
 	<%= f.label :release, "Release"%>
-	<%= collection_select :story, :release_id,@todo_releases, :id, :description%>
+	<%= collection_select :story, :release_id,@todo_releases, :id, :description, :include_blank=>true%>
 </div>
 
 <div>

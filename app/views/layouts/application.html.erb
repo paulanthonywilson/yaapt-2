@@ -19,10 +19,10 @@
 
 	<div id="nav">
 		<ul>
+			<li><%= link_to "All", stories_path %></li>
 			<li><%= link_to "Unassigned", unassigned_stories_path %></li>
 		</ul>
 		<hr/>
-		<h3>Releases</h3>
 		<ul>
 			<%= render :partial=>'/shared/release', :collection=>@todo_releases %>
 		</ul>	

@@ -28,7 +28,7 @@ class StoriesController < ApplicationController
     @story = Story.find(params[:id]) 
     if @story.update_attributes(params[:story])  
       flash[:notice]="Story updated"
-      redirect_to release_stories_path(@story.release)
+      redirect_to path_after_save
     else
       render :action=>:edit
     end
@@ -45,7 +45,7 @@ class StoriesController < ApplicationController
     @story =Story.new(params[:story])
     if @story.save
       flash[:notice]="Story created"
-      redirect_to release_stories_path(@story.release)
+      redirect_to path_after_save
     else 
       render :action=>:new
     end
@@ -62,4 +62,10 @@ class StoriesController < ApplicationController
   def load_release
     @release = Release.find(params[:release_id]) if params[:release_id] 
   end
+  
+  def path_after_save
+    return release_stories_path(@story.release) if @story.release
+    unassigned_stories_path
+  end
+  
 end

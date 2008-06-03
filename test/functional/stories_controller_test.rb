@@ -2,7 +2,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class StoriesControllerTest < ActionController::TestCase
   NEW_STORY_PARAMS={ :title=>'A new story', :body=>'as a developer I want this test to pass', :estimate=>1}
-
+  NEW_STORY_PARAMS_WITH_RELEASE=NEW_STORY_PARAMS.merge(:release_id=>Fixtures.identify(:tea_and_biscuits))
+  
+  
   context "stories with release" do
     setup do
       @story = stories(:make_tea)
@@ -10,7 +12,7 @@ class StoriesControllerTest < ActionController::TestCase
 
     should_be_restful do |resource|
       resource.parent = :release
-      resource.create.params = NEW_STORY_PARAMS
+      resource.create.params = NEW_STORY_PARAMS_WITH_RELEASE
       resource.update.params = { :title=>'Get in hot water' }
       resource.actions.delete :show
       resource.formats = [:html]
@@ -18,6 +20,15 @@ class StoriesControllerTest < ActionController::TestCase
       resource.update.redirect  = 'release_stories_path(@story.release)'
       resource.create.redirect =  'release_stories_path(@story.release)'
     end
+  end
+  
+  context "new story  release" do
+    setup do
+      post :create, :story=>NEW_STORY_PARAMS
+    end
+    
+    should_redirect_to "unassigned_stories_path"
+    
   end
 
 
@@ -72,7 +83,7 @@ class StoriesControllerTest < ActionController::TestCase
       assert_select ".release", :count=>0
     end
 
-    should "have release column" do
+    should "have release column for release assigned stories" do
       assert_select "#release_story_#{stories(:make_tea).id}"
     end
   end
@@ -136,7 +147,7 @@ class StoriesControllerTest < ActionController::TestCase
     setup do
       @release = releases(:tea_and_biscuits)
       @release_story_count = @release.stories.count
-      post :create, {:story=>NEW_STORY_PARAMS.merge(:release_id=>@release.id)}
+      post :create, {:story=>NEW_STORY_PARAMS_WITH_RELEASE}
     end
 
     should_respond_with :redirect
