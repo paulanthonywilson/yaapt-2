@@ -22,7 +22,7 @@ class StoriesControllerTest < ActionController::TestCase
     end
   end
   
-  context "new story  release" do
+  context "new story release" do
     setup do
       post :create, :story=>NEW_STORY_PARAMS
     end
@@ -59,9 +59,12 @@ class StoriesControllerTest < ActionController::TestCase
       assert_select "td #release_story_#{stories(:make_tea).id}",  :count=>0
     end
 
-    should "link to release edit" do
+    should "have link to release edit" do
       assert_link edit_release_path(@release)
     end
+    
+    should_not_assign_to(:listing_all_stories)
+    should_not_assign_to(:listing_unassigned_stories)
 
   end
 
@@ -87,6 +90,10 @@ class StoriesControllerTest < ActionController::TestCase
     should "contain stories in dom id 'all_story_list'" do
       assert_select "#all_story_list #story_#{stories(:make_tea).id}"
     end
+    should_assign_to(:listing_all_stories)
+    should_not_assign_to(:listing_unassigned_stories)
+
+
   end
 
   context "index for unassigned stories" do
@@ -114,6 +121,9 @@ class StoriesControllerTest < ActionController::TestCase
     should "contain stories in dom id 'story_list'" do
       assert_select "#story_list #story_#{stories(:slaughter_ox).id}"
     end
+
+    should_not_assign_to(:listing_all_stories)
+    should_assign_to(:listing_unassigned_stories)
     
   end
 

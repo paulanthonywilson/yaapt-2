@@ -5,6 +5,6 @@ module ApplicationHelper
   end  
   
   def rjs_update_estimate_total(page, release)
-    page.select('#' + dom_id(release, 'estimate_total')).each {|item| item.update(release.estimate_total)}
+    page.select('#' + dom_id(release, 'estimate_total')).each {|item| item.update(release.estimate_total)} if release
   end 
 end

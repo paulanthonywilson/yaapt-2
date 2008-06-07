@@ -11,13 +11,13 @@ class StoriesController < ApplicationController
   end 
 
   def index 
-    @stories = 
     if @release
       @stories_container_id = 'story_list'
-      @release.stories
+      @stories = @release.stories
     else
       @stories_container_id = 'all_story_list'
-      Story.find(:all)
+      @listing_all_stories = true
+      @stories = Story.find(:all)
     end
   end 
   
@@ -25,6 +25,7 @@ class StoriesController < ApplicationController
     @stories_container_id = 'story_list'
     @stories = Story.unassigned
     @title = "Unassigned stories"
+    @listing_unassigned_stories = true
     render :action=>:index
   end
 
@@ -61,6 +62,8 @@ class StoriesController < ApplicationController
     flash[:notice]="Story removed"
     redirect_to release_stories_path(story.release)
   end
+  
+  
 
   private 
   def load_release

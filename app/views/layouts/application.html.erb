@@ -13,14 +13,30 @@
 	<div id="header"> 
 	    <h1><%= link_to "Yaapt", '/'%></h1>
 
-		<h3><%= @title ||=""%></h3>
 		<p><%= link_to 'New release', new_release_path%></p>
 	</div>
 
 	<div id="nav">
 		<ul>
-			<li><%= link_to "All", stories_path %></li>
-			<li><%= link_to "Unassigned", unassigned_stories_path %></li>
+			<li>
+				<% unless @listing_all_stories %>
+					<%= link_to "All", stories_path %>
+				<% else %>
+					All
+				<% end %>
+				</li>
+			<li>
+				<% unless @listing_unassigned_stories %>
+			<%= link_to "Unassigned", unassigned_stories_path, :id=>'unassigned_link' %>
+			<%= drop_receiving_element('unassigned_link', 
+				:url=>drop_story_unassign_release_path,
+				:accept=>'story',
+				:with=>"'story_id='+ (element.id.split('_').last())",
+				:hoverclass=>'release-active') %>
+				<% else %>
+					Unassigned
+				<% end %>
+			</li>
 		</ul>
 		<hr/>
 		<ul>

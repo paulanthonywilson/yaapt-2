@@ -23,7 +23,7 @@ class ReleasesControllerTest < ActionController::TestCase
       flexmock(Release, :new=>@release)
       post :create, :release=>{:name=>"a release", :release_date=>'2007-03-11'}
     end
-    
+
     should "display the new form" do
       assert_response :success
       assert_template 'new'
@@ -39,7 +39,7 @@ class ReleasesControllerTest < ActionController::TestCase
       Release.should_receive(:find).with("5").and_return(@release)
       put :update, :id=>@release.id
     end
-    
+
     should "redisplay the edit form" do
       put :update, :id=>@release.id
       assert_response :success
@@ -47,7 +47,7 @@ class ReleasesControllerTest < ActionController::TestCase
       assert_equal @release, assigns(:release)
     end
   end
-  
+
   context "drop_release" do
     setup do
       @release = releases(:tea_and_biscuits)
@@ -55,13 +55,33 @@ class ReleasesControllerTest < ActionController::TestCase
       @original_story_release = @story.release
       post :drop_release, :id=>@release.id, :story_id=>@story.id
     end
-    
+
     should "add story to release" do
       assert_equal @release, @story.reload.release
+    end
+
+    should "assign previous release" do
+      assert_equal @original_story_release, assigns(:previous_release)
+    end
+  end
+
+  context "drop unassign release" do
+    setup do
+      @story = stories(:mix_cocktails)
+      @original_story_release = @story.release
+      post :drop_unassign_release, :story_id=>@story.id
+    end
+
+    should "set story's release to null" do
+      assert_equal nil, @story.reload.release
     end
     
     should "assign previous release" do
       assert_equal @original_story_release, assigns(:previous_release)
+    end
+    
+    should "assign to story" do
+      assert_equal @story, assigns(:story)
     end
   end
 

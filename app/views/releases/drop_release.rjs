@@ -4,7 +4,7 @@ page << <<-EOS
     element.removeClassName('stripe')
   })
   $$('##{dom_id(@story, 'release')}').each(function(element){
-    element.update('#{link_to @story.release.description, release_stories_path(@story.release)}')
+    element.update('#{release_description_content(@story)}')
   })
   restripe('story_list')
 EOS

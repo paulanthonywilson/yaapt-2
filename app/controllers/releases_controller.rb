@@ -23,6 +23,13 @@ class ReleasesController < ApplicationController
     @release = Release.find(params[:id])
     @story.update_attributes(:release=>@release)
   end
+  
+  def drop_unassign_release
+    @story = Story.find(params[:story_id])
+    @previous_release = @story.release
+    @story.update_attributes(:release=>nil) 
+    render :action=>:drop_release
+  end
 
   def create
     @release = Release.new(params[:release])
