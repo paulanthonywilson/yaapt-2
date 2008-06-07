@@ -23,6 +23,20 @@ class StoryTest < ActiveSupport::TestCase
     should_go_from_to('unstarted', 'in_progress')
     should_go_from_to('in_progress', 'done')
   end 
+  
+  
+  test "saving a story should notify the associated release" do
+    make_coffee = stories(:make_coffee)
+    make_coffee.release = flexmock(releases(:tea_and_biscuits))
+    make_coffee.release.should_receive(:notify_story_change).times(1)
+    assert make_coffee.save
+  end
+  
+  test "only stories in a status of done should be done" do
+    assert !Story.new(:status=>'unstarted').done?
+    assert !Story.new(:status=>'in_progress').done?
+    assert Story.new(:status=>'done').done?
+  end
 
   test "advancing a done story should be a no-op" do
     story = Story.create(:title=>'x', :status=>'done')
@@ -33,4 +47,6 @@ class StoryTest < ActiveSupport::TestCase
   test "unassigned stories should not be associated with a release" do
     assert_equal Story.find(:all).reject(&:release_id), Story.unassigned
   end
+  
+  
 end

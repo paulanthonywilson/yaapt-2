@@ -1,6 +1,2 @@
-<% div_for @release do %>
-
-<h1><%=@release.description%>
 <%=link_to image_tag('edit.png', :alt=>'edit'), edit_release_path(@release)%>
-</h1>
-<% end%>
+<p>Estimated todo: <%= content_tag :span,  @release.estimate_total, :id=>dom_id(@release, 'estimate_total') %></p>

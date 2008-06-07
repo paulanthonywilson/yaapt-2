@@ -22,5 +22,14 @@ class Story < ActiveRecord::Base
   def self.unassigned
     find(:all, :conditions=>'release_id is null')
   end
+  
+  def after_save
+    release.notify_story_change if release
+  end
+  
+  def done?
+    status == 'done'
+  end
+    
 
 end

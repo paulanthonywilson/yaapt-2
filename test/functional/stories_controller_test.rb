@@ -51,8 +51,8 @@ class StoriesControllerTest < ActionController::TestCase
       assert_link new_release_story_path(@release)
     end
 
-    should "contain display release details" do
-      assert_select ".release"
+    should "contain display release description" do
+      assert_select "h1", :title=>@release_description
     end
 
     should "not have release column" do
@@ -66,7 +66,7 @@ class StoriesControllerTest < ActionController::TestCase
   end
 
   
-  context "index without release" do
+  context "index for all stories" do
     setup do
       get :index
     end
@@ -79,12 +79,13 @@ class StoriesControllerTest < ActionController::TestCase
       assert_link new_story_path
     end
 
-    should "not contain display of release details at top" do
-      assert_select ".release", :count=>0
-    end
 
     should "have release column for release assigned stories" do
       assert_select "#release_story_#{stories(:make_tea).id}"
+    end
+    
+    should "contain stories in dom id 'all_story_list'" do
+      assert_select "#all_story_list #story_#{stories(:make_tea).id}"
     end
   end
 
@@ -103,18 +104,22 @@ class StoriesControllerTest < ActionController::TestCase
     end
 
     should "not have release column" do
-      assert_select "td #release_story_#{stories(:make_tea).id}",  :count=>0
+      assert_select "td #release_story_#{stories(:slaughter_ox).id}",  :count=>0
     end
 
     should "only list stories for the release" do
       assert_same_elements Story.unassigned, assigns(:stories)
     end
     
+    should "contain stories in dom id 'story_list'" do
+      assert_select "#story_list #story_#{stories(:slaughter_ox).id}"
+    end
+    
   end
 
   context "index with release" do
     setup do
-      get :index
+      get :index, :release_id=>releases(:tea_and_biscuits)
     end
 
     should "contain advance link for unfinished stories" do
@@ -123,6 +128,10 @@ class StoriesControllerTest < ActionController::TestCase
 
     should "not contain advance link for done stories" do
       assert_advance_button_count_for_story 0, :biscuits
+    end
+
+    should "contain stories in dom id 'story_list'" do
+      assert_select "#story_list #story_#{stories(:make_tea).id}"
     end
 
   end

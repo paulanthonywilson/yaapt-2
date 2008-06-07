@@ -20,8 +20,12 @@ module StoriesHelper
 
   def release_description_cell(story, release)
     unless release
-      return "<td></td>" unless story.release
-      "<td id='#{dom_id(story, 'release')}'>#{link_to story.release.description, release_path(story.release)}</td>"
+      "<td id='#{dom_id(story, 'release')}'>#{link_to story.release.description, release_stories_path(story.release) if story.release}</td>"
     end
+  end
+  def title
+    return @title if @title
+    return @release.description if @release
+    "Stories"
   end
 end

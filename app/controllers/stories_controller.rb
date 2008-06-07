@@ -13,14 +13,18 @@ class StoriesController < ApplicationController
   def index 
     @stories = 
     if @release
+      @stories_container_id = 'story_list'
       @release.stories
     else
+      @stories_container_id = 'all_story_list'
       Story.find(:all)
     end
   end 
   
   def unassigned
+    @stories_container_id = 'story_list'
     @stories = Story.unassigned
+    @title = "Unassigned stories"
     render :action=>:index
   end
 

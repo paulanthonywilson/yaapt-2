@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'flexmock/test_unit'
 
 class ReleasesControllerTest < ActionController::TestCase
 
@@ -46,6 +45,23 @@ class ReleasesControllerTest < ActionController::TestCase
       assert_response :success
       assert_template 'edit'
       assert_equal @release, assigns(:release)
+    end
+  end
+  
+  context "drop_release" do
+    setup do
+      @release = releases(:tea_and_biscuits)
+      @story = stories(:mix_cocktails)
+      @original_story_release = @story.release
+      post :drop_release, :id=>@release.id, :story_id=>@story.id
+    end
+    
+    should "add story to release" do
+      assert_equal @release, @story.reload.release
+    end
+    
+    should "assign previous release" do
+      assert_equal @original_story_release, assigns(:previous_release)
     end
   end
 

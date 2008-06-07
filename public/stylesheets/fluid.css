@@ -34,7 +34,6 @@ float: left;
 width: 110px;
 margin: 0;
 padding: .25em;
-background-color: #E0B577; 
 }
 
 #nav ul
@@ -57,6 +56,10 @@ background: #5B5B5B;
 color: E0B577;
 }	
 
+#nav li a.release-active{
+	background-color: #CCCCCC;
+}
+
 #nav li a
 {
 background:#3B0822;
@@ -71,13 +74,17 @@ background:#4C83BA;
 color:#fff;
 }
 
+#content{
+	background-color: #3B0822;
+	min-height: 35em;
+	
+}
+
 #content
 { 
 margin-left: 120px;
 border-left: 1px solid gray;
 padding: 40px ; 
-background-color: #3B0822;
-min-height: 35em;
 }
 
 #content h2, h3

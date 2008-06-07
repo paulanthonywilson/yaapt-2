@@ -19,6 +19,9 @@ table.stripy td a{
 	float:left;
 }
 
+td.handle{
+	width: 10px;
+}
 
 table.stripy tr.odd {
 	background: #E0B577;

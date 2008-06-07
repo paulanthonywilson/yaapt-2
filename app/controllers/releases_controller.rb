@@ -16,6 +16,13 @@ class ReleasesController < ApplicationController
       render :action=>:edit
     end
   end
+  
+  def drop_release
+    @story = Story.find(params[:story_id])
+    @previous_release = @story.release
+    @release = Release.find(params[:id])
+    @story.update_attributes(:release=>@release)
+  end
 
   def create
     @release = Release.new(params[:release])
