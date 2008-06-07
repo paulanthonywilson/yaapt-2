@@ -32,6 +32,15 @@ class StoryTest < ActiveSupport::TestCase
     assert make_coffee.save
   end
   
+  test "when a found story is unassigned from a release, the associated release is notified" do
+    make_coffee = stories(:make_coffee)
+    make_coffee.release = flexmock(releases(:tea_and_biscuits))
+    
+    make_coffee.release.should_receive(:notify_story_change).times(1)
+    make_coffee.release=nil
+    assert make_coffee.save
+  end
+  
   test "only stories in a status of done should be done" do
     assert !Story.new(:status=>'unstarted').done?
     assert !Story.new(:status=>'in_progress').done?
