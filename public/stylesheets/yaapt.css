@@ -149,5 +149,14 @@ table.stripy tr.even td
 	background: #F2E6B6;
 }
 
+form label{
+	width: 80px;
+	display: block;
+	float:left;
+}
+
+form div {
+	margin-bottom: 10px;
+}
 
 
