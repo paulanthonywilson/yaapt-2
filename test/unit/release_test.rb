@@ -66,7 +66,7 @@ class ReleaseTest < ActiveSupport::TestCase
   context "notify_story_change" do
     setup do
       @release = releases(:tea_and_biscuits)
-      @now = Date::civil(2008, 7, 2)
+      @today = Date::civil(2008, 7, 2)
       flexmock(Date, :today=>@today)
     end
 
@@ -82,11 +82,61 @@ class ReleaseTest < ActiveSupport::TestCase
       assert_equal 1, today_histories.size
       assert_equal 3, today_histories.first.estimate_total
     end
-    
-    
-
-
   end
+  
+  context "burndown graph" do
+    setup do
+      @release = releases(:tea_and_biscuits)
+      @gruff = flexmock('gruff')
+      @gruff.should_ignore_missing
+      @gruff.should_receive(:data).with("burndown",on { |data_points| @data_points = data_points} ) 
+      @gruff.should_receive(:labels=).with(on { |labels| @labels = labels} ) 
+      flexmock(Gruff::Line, :new=>@gruff)
+    end
 
+    should "have a data item for each day between the earliest history entry and the release date" do
+      @release.to_burndown_graph
+     assert_equal 31, @data_points.size
+    end
+    
+    should "have nil data items for days on which there is no release history" do
+      @release.to_burndown_graph
+      assert_equal nil, @data_points[5]
+      assert_equal nil, @data_points[30]
+    end
+    
+    should "have the estimate total for those days on which there is a release history" do
+      @release.to_burndown_graph
+      assert_equal 29, @data_points[0]
+      assert_equal 15, @data_points[18]
+    end
+    
+    
+    should "label the history dates which are first, last, 1/3 and 2/3" do
+      @release.to_burndown_graph
+      assert_equal({0=>'01 May 2008', 10=>'11 May 2008', 21=>'22 May 2008', 30=>'31 May 2008'}, @labels)
+    end
+
+    should "have the release description as its title" do
+      @gruff.should_receive(:title=).with(@release.description).once
+      @release.to_burndown_graph
+    end
+    
+    
+    should "set the minimum value to 0" do
+      @gruff.should_receive(:minimum_value=).with(0).once
+      @release.to_burndown_graph
+    end
+    
+    should "return the gruff object" do
+      assert_equal @gruff, @release.to_burndown_graph
+    end
+    
+    should "do something sensible if there is no data" do
+      releases(:midnight_snack).to_burndown_graph
+    end
+    
+    
+  end
 
 end

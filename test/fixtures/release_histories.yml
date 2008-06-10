@@ -1,11 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-<% 1.upto(20) do |i| %>
+<% 
+day=1
+1.upto(15) do |i| %>
 tea_and_biscuits_day_<%=i%>:
-  history_date: 2008-06-03
+  history_date: 2008-05-<%=day%>
   estimate_total: <%= 30 - i %>
   release: tea_and_biscuits
-<% end %>
+<% 
+  day+= i % 5 == 0 ? 3 : 1
+end %>
 dinner_party_day_1:
-  history_date: 2008-06-03
+  history_date: '2008-06-03'
   estimate_total: 9.99
   release: dinner_party

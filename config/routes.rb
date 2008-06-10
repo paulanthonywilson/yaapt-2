@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :stories, :member=>{:advance=>:put}, :collection=>{:unassigned=>:get}
-  map.resources :releases, :has_many=>[:stories], :member=>{:drop_release=>:post}
+  map.resources :releases, :has_many=>[:stories], :member=>{:drop_release=>:post, :burndown=>:get, :burndown_image=>:get}
   map.drop_story_unassign_release 'releases/drop_unassign_story', :controller => 'releases', :action => 'drop_unassign_release'
 
   # The priority is based upon order of creation: first created -> highest priority.

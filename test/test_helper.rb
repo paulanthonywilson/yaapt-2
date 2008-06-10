@@ -11,6 +11,7 @@ class Test::Unit::TestCase
   def self.test(name, &body) 
     define_method("test #{name}", body)
   end
+  
   def assert_include?(includer, includee)
     assert includer.include?(includee), "expecting '#{includer.inspect}' to include '#{includee.inspect}'"
   end 
@@ -20,7 +21,8 @@ class ActionController::TestCase
 
   def assert_link(link)
     assert_select "a[href='#{link}']"    
-  end  
+  end 
+   
 
 
   class << self
@@ -33,5 +35,12 @@ class ActionController::TestCase
         end
       end
     end
+    
+    def should_link_to(link)
+      should "link to #{link}" do
+        assert_link eval(link.to_s)
+      end
+    end
+    
   end
 end

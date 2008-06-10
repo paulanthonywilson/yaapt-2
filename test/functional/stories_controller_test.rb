@@ -101,10 +101,8 @@ class StoriesControllerTest < ActionController::TestCase
     setup do
       get :unassigned
     end
-
-    should "link to new story without release" do
-      assert_link new_story_path
-    end
+    
+    should_link_to :new_story_path
 
     should "not contain display of release details at top" do
       assert_select ".release", :count=>0
@@ -131,6 +129,8 @@ class StoriesControllerTest < ActionController::TestCase
     setup do
       get :index, :release_id=>releases(:tea_and_biscuits)
     end
+
+    should_link_to 'burndown_release_path(releases(:tea_and_biscuits))'
 
     should "contain advance link for unfinished stories" do
       assert_advance_button_count_for_story 1, :make_tea
