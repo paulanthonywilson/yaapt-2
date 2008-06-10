@@ -7,4 +7,8 @@ module ApplicationHelper
   def rjs_update_estimate_total(page, release)
     page.select('#' + dom_id(release, 'estimate_total')).each {|item| item.update(release.estimate_total)} if release
   end 
+  
+  def selected_link(text)
+    content_tag 'span', text, :class=>'selected_link'
+  end
 end

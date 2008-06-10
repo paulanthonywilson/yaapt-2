@@ -4,12 +4,12 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title>Yet another Agile planning tool</title>
-  <%= stylesheet_link_tag  'yaapt', 'fluid', 'table'%> 
+  <%= stylesheet_link_tag  'yaapt'%> 
   <%= javascript_include_tag :defaults %>
 
 </head>
 <body>
-<div id="container">
+	<div id="side">
 	<div id="header"> 
 	    <h1><%= link_to "Yaapt", '/'%></h1>
 
@@ -22,7 +22,7 @@
 				<% unless @listing_all_stories %>
 					<%= link_to "All", stories_path %>
 				<% else %>
-					All
+					<%= selected_link 'All' %>
 				<% end %>
 				</li>
 			<li>
@@ -34,21 +34,33 @@
 				:with=>"'story_id='+ (element.id.split('_').last())",
 				:hoverclass=>'release-active') %>
 				<% else %>
-					Unassigned
+					<%= selected_link 'Unassigned' %>
 				<% end %>
 			</li>
 		</ul>
 		<hr/>
 		<ul>
-			<%= render :partial=>'/shared/release', :collection=>@todo_releases %>
+			<%= render :partial=>'/shared/release_link', :collection=>@todo_releases %>
 		</ul>	
 		<hr/>	
 		<h3>Done releases</h3>
 		<ul>
-			<%= render :partial=>'/shared/release', :collection=>@done_releases %>
+			<%= render :partial=>'/shared/release_link', :collection=>@done_releases %>
 		</ul>		
 	</div>
-
+	<p>
+		<% 1.upto(5) do |i| %>
+			<span id='d<%=i%>'>&nbsp;&nbsp;&nbsp;</span>
+			<% end%>
+		</p>
+	
+	</div>
+	<div id="content-head">
+		<h1><%= title %><%=link_to image_tag('edit.png', :alt=>'edit'), edit_release_path(@release) if @release%></h1>
+		
+		
+		<%= yield :content_head %>
+	</div>
 	<div id="content">
 		<p  id="flash_notice"><%= flash[:notice] %></p>
 		<%= yield  :layout %>
@@ -57,7 +69,7 @@
 	<div id="footer">
 		<p><a href="http://merecomplexities.com" target="_blank">Mere Complexities Limited</a></p>
 	</div>
-</div>
+
 
 
 </body>

@@ -1,6 +1,7 @@
+<% release = release_link%>
 <li >
 	<% if release == @release%>
-		<%= release.description%>
+		<%= selected_link release.description%>
 	<%else%>
 	<%= link_to release.description, release_stories_path(release), :id=>dom_id(release, 'side_link')%>
 	<%= drop_receiving_element(dom_id(release, 'side_link'), 

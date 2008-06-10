@@ -1,0 +1,11 @@
+<% 
+if @release 
+	content_for(:content_head) do %>
+<p>Estimated todo: <%= content_tag :span,  @release.estimate_total, :id=>dom_id(@release, 'estimate_total') %></p>
+<p>
+<%=link_to 'stories', release_stories_path(@release)%>
+<%=link_to "burndown", burndown_release_path(@release)%>
+</p>
+<% 
+	end 
+end%>
