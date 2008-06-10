@@ -24,6 +24,10 @@ div
 	width: 110px;
 }
 
+#header{
+	border-right: solid thin  #5B7876;
+	border-bottom: solid thin  #5B7876;
+}
 #header, #content-head
 {
 	height: 120px;
@@ -158,5 +162,39 @@ form label{
 form div {
 	margin-bottom: 10px;
 }
+
+.stories td.handle,.stories td.edit,.stories td.destroy{
+	width: 20px;
+	
+}
+
+
+.stories td.title{
+	width: 200px;
+}
+
+.stories td.body{
+	
+}
+
+.stories td.estimate{
+	width: 30px;
+	
+}
+
+.stories td.status{
+	width: 80px;
+	
+}
+
+.stories td.advance_button{
+	width: 85px;
+	
+}
+
+
+
+
+
 
 

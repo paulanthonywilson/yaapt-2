@@ -3,18 +3,18 @@
 <%= new_story_link @release %>
 </div>
 <table class="stripy"> 
-	<tbody id='<%= @stories_container_id %>'> 
+	<tbody id='<%= @stories_container_id %>' class='stories'> 
   <% @stories.each do |story|%>    
     <% content_tag_for(:tr, story, :class=>"#{cycle('odd', 'even')} stripe") do %>
     	<td id='<%=dom_id(story, 'drag_handle')%>' class='handle'><%=image_tag('handle.png', :width=>'18px') %></td>
-      <td><%= h story.title %></td>
-      <td><%= h story.body %></td>
-      <td><%= h story.estimate %></td>
-      <td id='<%=dom_id(story, "status")%>' style="width: 100px;" ><%= story_status story%></td>
-      <td style="width: 50px;" id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></td>
+      <td class='title'><%= h story.title %></td>
+      <td class='body'><%= h story.body %></td>
+      <td class='estimate'><%= h story.estimate %></td>
+      <td id='<%=dom_id(story, "status")%>' class='status' ><%= story_status story%></td>
+      <td class='advance_button' id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></td>
 			<%=release_description_cell story, @release%>
-      <td><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></td>
-      <td><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></td>
+      <td class='edit'><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></td>
+      <td class='destroy'><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></td>
 			
     <% end%>
 		<%= draggable_element dom_id(story), :ghosting=>true, :revert=>true%>
