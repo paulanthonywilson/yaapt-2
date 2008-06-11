@@ -9,7 +9,7 @@ class Release < ActiveRecord::Base
   end
 
   def estimate_total
-    stories.reject(&:done?).map(&:estimate).sum
+    stories.reject(&:done?).map{|story| story.estimate ? story.estimate : 0}.sum
   end
 
   def notify_story_change

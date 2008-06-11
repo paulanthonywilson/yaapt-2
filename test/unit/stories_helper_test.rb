@@ -99,4 +99,6 @@ class StoriesHelperTest < ActiveSupport::TestCase
       assert_equal "Stories", title
     end
   end
+  
+  
 end

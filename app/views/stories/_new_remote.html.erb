@@ -1,0 +1,29 @@
+<div id='remote_story_div'>
+<% 
+@story||=Story.new
+@story.release = @release
+
+%>
+<%= errors_for :story %> 
+<% form_remote_for @story, :html=>{:class=>'remote_story'} do |f| %>
+	<%= f.hidden_field :release_id %>
+	<div id="left_fields">
+	<div id="title">
+		<%= f.label :title, "Title"%>
+		<%= f.text_field :title, :size=>61, :tablindex=>1 %>
+	</div>
+		<br/> 
+	<div id="story">
+	<%= f.label :body, "Story"%> 
+	<%= f.text_area :body, :cols=>60, :rows=>4, :tabindex=>3 %>
+	</div>
+	</div>
+	<div id="right_fields">
+	<div id="estimate_div"> 
+		<%= f.label :estimate, "Estimate"%>
+		<%= f.text_field :estimate , :size=>5, :tabindex=>2 %>
+	</div>
+		<%= f.submit submit_text(@story), :tabindex=>4%>
+	</div>  
+<% end%>
+</div>

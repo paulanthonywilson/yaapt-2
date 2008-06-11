@@ -6,20 +6,17 @@
 #d4{background: #F2E6B6;}
 #d5{background: #412A22;}
 
-body
-{
+body{
 	background: #F2E6B6;	
 }
 
-div
-{
+div{
 	margin: 0;
 	padding:  0;
-	overflow: auto;
+	overflow: hidden;
 }
 
-#side
-{
+#side{
 	float: left;
 	width: 110px;
 }
@@ -28,8 +25,8 @@ div
 	border-right: solid thin  #5B7876;
 	border-bottom: solid thin  #5B7876;
 }
-#header, #content-head
-{
+
+#header, #content-head{
 	height: 120px;
 }
 
@@ -41,24 +38,23 @@ div
 
 #content-head{
 	margin-bottom: 0;
+	background: #8F9E8B;
 }
-#content-head p
-{
+
+#content-head p{
 	margin: 3px;
 }
 
 
 
-#content
-{ 
+#content{ 
 	margin-top: 0;
 	background: #5B7876;
 	height:650px;
 }
 
 
-#footer
-{
+#footer{
 	clear:both;
 	margin: 5px;
 	padding: 0.5em;
@@ -66,18 +62,18 @@ div
 	border-top: 1px solid gray;
 	font:  small-caps .5em ;
 }
-#footer a
-{
+
+#footer a{
 	text-decoration:none;
 	color: black;
 }
-#footer p
-{
+
+#footer p{
 	margin: 0 0 0 0;
 	text-align: right;
 }
-#footer a:hover
-{		
+
+#footer a:hover{		
 	background:#4C83BA;
 	color:#fff;	
 }
@@ -86,8 +82,7 @@ div
 	background-color: #CCCCCC;
 }
 
-#nav ul
-{
+#nav ul{
 	list-style:none;
 	padding: 0 0 0 0;
 	margin:0 auto;
@@ -102,36 +97,30 @@ div
 	padding: 0;
 }	
 
-#nav li a
-{
+#nav li a{
 	background: #8F9E8B;
 	display: block;
 	text-decoration: none;
 }	
 
-#nav li .selected_link
-{
+#nav li .selected_link{
 	background: #5B7876;
 	display: block;
 }
-#nav li a:hover 
-{
+#nav li a:hover {
 	background: #412A22;
 }
 
-a:visited, a 
-{
+a:visited, a {
 	color: #412A22;
 }
 
-a:hover
-{
+a:hover{
 	color: white;	
 	background: #412A22;
 }
 
-table.stripy tr.odd td 
-{
+table.stripy tr.odd td {
 	background: #8F9E8B;
 }
 
@@ -139,8 +128,7 @@ a img{
 	border: none; 
 }
 
-table.stripy
-{
+table.stripy{
 	width: 100%;
 }
 table.stripy td a{
@@ -153,21 +141,23 @@ table.stripy tr.even td
 	background: #F2E6B6;
 }
 
-form label{
+.new_story label, .edit_story label{
 	width: 80px;
 	display: block;
 	float:left;
 }
 
-form div {
+.new_story div, .edit_story div {
 	margin-bottom: 10px;
 }
 
 .stories td.handle,.stories td.edit,.stories td.destroy{
 	width: 20px;
-	
 }
 
+.handle{
+	cursor: move;
+}
 
 .stories td.title{
 	width: 200px;
@@ -192,9 +182,50 @@ form div {
 	
 }
 
+.remote_story input, .remote_story textarea {
+}
+
+.remote_story   label {
+	vertical-align: top;
+	width: 50px;
+	margin-right: 10px;
+	display: block;
+	float:left;
+}
+
+.remote_story #title_div{
+	float: left;
+}
+
+.remote_story #left_fields {
+	float:left;
+	margin-right: 20px;
+	width: 565px;
+}
+.remote_story #right_fields {
+	width: 120px;
+}
+
+.remote_story #story_submit {
+	float: right;
+	margin-top: 68px;
+	margin-right: 7px;
+}
 
 
+#remote_story_div {
+	margin-bottom: 20px;
+}
+
+#errorExplanation {
+  width: 100%;
+  border: 2px solid red;
+  padding: 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
 
 
-
-
+#errorExplanation ul li {
+  font-size: 12px;
+}

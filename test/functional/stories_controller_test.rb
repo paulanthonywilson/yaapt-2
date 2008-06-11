@@ -63,6 +63,14 @@ class StoriesControllerTest < ActionController::TestCase
       assert_link edit_release_path(@release)
     end
     
+    should "have form for new story" do
+      assert_select "form#new_story"
+    end
+    
+    should "include a hidden field in new story form for the release id" do
+      assert_select "form#new_story input#story_release_id[value='#{@release.id}']"
+    end
+    
     should_not_assign_to(:listing_all_stories)
     should_not_assign_to(:listing_unassigned_stories)
 
@@ -93,6 +101,9 @@ class StoriesControllerTest < ActionController::TestCase
     should_assign_to(:listing_all_stories)
     should_not_assign_to(:listing_unassigned_stories)
 
+    should "not have form for new story" do
+       assert_select "form#new_story", :count=>0
+     end
 
   end
 
@@ -120,6 +131,9 @@ class StoriesControllerTest < ActionController::TestCase
       assert_select "#story_list #story_#{stories(:slaughter_ox).id}"
     end
 
+    should "have form for new story" do
+      assert_select "form#new_story"
+    end
     should_not_assign_to(:listing_all_stories)
     should_assign_to(:listing_unassigned_stories)
     
@@ -174,7 +188,22 @@ class StoriesControllerTest < ActionController::TestCase
       assert_equal @release_story_count + 1, @release.reload.stories.count
     end 
   end
-
+  
+  context "destroying story with release" do
+    setup do
+      @story=stories(:make_tea)
+      delete :destroy, :id=>@story
+    end
+    should_redirect_to 'release_stories_path(@story.release)'
+  end
+  context "destroying story without release" do
+    setup do
+      @story=stories(:slaughter_ox)
+      delete :destroy, :id=>@story
+    end
+    should_redirect_to 'unassigned_stories_path'
+  end
+  
   private
   def assert_advance_button_count_for_story(expected_count, story)
     assert_select "#story_#{stories(story).id} a img[alt='advance']" , {:count=>expected_count}, "Advance link for story"

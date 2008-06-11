@@ -61,6 +61,11 @@ class ReleaseTest < ActiveSupport::TestCase
     should "be total of estimates of stories that are not done" do
       assert_equal 3, releases(:tea_and_biscuits).estimate_total
     end
+    
+    should "consider nil estimate to be zero" do
+      releases(:tea_and_biscuits).stories << Story.new
+      assert_equal 3, releases(:tea_and_biscuits).estimate_total
+    end
   end
 
   context "notify_story_change" do

@@ -1,0 +1,5 @@
+@release = @story.release
+page.insert_html :bottom, 'story_list', :partial=>'story.html.erb', :locals=>{:story=>@story}
+page << "restripe('story_list')"
+@story = nil
+page.replace 'remote_story_div', render(:partial=>'new_remote.html.erb')

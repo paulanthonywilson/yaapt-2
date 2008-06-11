@@ -1,26 +1,16 @@
 <%= render :partial =>'/shared/release_story_links'%>
-<div> 
-<%= new_story_link @release %>
-</div>
+<%  if @release || @listing_unassigned_stories%>
+<a href="#" onclick="Effect.toggle('remote_story_div', 'blind'); return false;">Add story</a>
+<%= render :partial =>'new_remote'%>
+<script>$('remote_story_div').hide()</script>
+<% end%>
 <table class="stripy"> 
 	<tbody id='<%= @stories_container_id %>' class='stories'> 
-  <% @stories.each do |story|%>    
-    <% content_tag_for(:tr, story, :class=>"#{cycle('odd', 'even')} stripe") do %>
-    	<td id='<%=dom_id(story, 'drag_handle')%>' class='handle'><%=image_tag('handle.png', :width=>'18px') %></td>
-      <td class='title'><%= h story.title %></td>
-      <td class='body'><%= h story.body %></td>
-      <td class='estimate'><%= h story.estimate %></td>
-      <td id='<%=dom_id(story, "status")%>' class='status' ><%= story_status story%></td>
-      <td class='advance_button' id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></td>
-			<%=release_description_cell story, @release%>
-      <td class='edit'><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></td>
-      <td class='destroy'><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></td>
-			
-    <% end%>
-		<%= draggable_element dom_id(story), :ghosting=>true, :revert=>true%>
-  <% end%>
+  	<%= render :partial=>'story', :collection=>@stories %>
 	</tbody>
 </table>
+<%= new_story_link @release %>
+
 
 
 
