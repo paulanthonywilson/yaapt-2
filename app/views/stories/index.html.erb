@@ -1,6 +1,6 @@
 <%= render :partial =>'/shared/release_story_links'%>
 <%  if @release || @listing_unassigned_stories%>
-<a href="#" onclick="Effect.toggle('remote_story_div', 'blind'); return false;">Add story</a>
+<a href="#" onclick="Effect.toggle('remote_story_div', 'appear'); return false;">Add story</a>
 <%= render :partial =>'new_remote'%>
 <script>$('remote_story_div').hide()</script>
 <% end%>
@@ -10,7 +10,6 @@
 	</tbody>
 </table>
 <%= new_story_link @release %>
-
 
 
 

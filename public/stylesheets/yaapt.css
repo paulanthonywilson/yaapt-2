@@ -22,12 +22,11 @@ div{
 }
 
 #header{
-	border-right: solid thin  #5B7876;
-	border-bottom: solid thin  #5B7876;
 }
 
 #header, #content-head{
 	height: 120px;
+	border-bottom: solid thin  #5B7876;
 }
 
 #content-head, #content{
@@ -39,6 +38,7 @@ div{
 #content-head{
 	margin-bottom: 0;
 	background: #8F9E8B;
+	border-left: solid thin  #5B7876;
 }
 
 #content-head p{
@@ -119,6 +119,7 @@ a:hover{
 	color: white;	
 	background: #412A22;
 }
+
 
 table.stripy tr.odd td {
 	background: #8F9E8B;
@@ -203,7 +204,7 @@ table.stripy tr.even td
 	width: 565px;
 }
 .remote_story #right_fields {
-	width: 120px;
+	width: 130px;
 }
 
 .remote_story #story_submit {
@@ -214,7 +215,7 @@ table.stripy tr.even td
 
 
 #remote_story_div {
-	margin-bottom: 20px;
+	margin: 10px;
 }
 
 #errorExplanation {
