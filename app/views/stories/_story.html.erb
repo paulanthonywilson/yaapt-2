@@ -1,13 +1,19 @@
-<% content_tag_for(:tr, story, :class=>"#{cycle('odd', 'even')} stripe") do %>
-	<td id='<%=dom_id(story, 'drag_handle')%>' class='handle'><%=image_tag('handle.png', :width=>'18px') %></td>
-  <td class='title'><%= h story.title %></td>
-  <td class='body'><%= h story.body %></td>
-  <td class='estimate'><%= h story.estimate %></td>
-  <td id='<%=dom_id(story, "status")%>' class='status' ><%= story_status story%></td>
-  <td class='advance_button' id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></td>
+<% content_tag_for(:div, story, :class=>"#{cycle('odd', 'even')} stripe") do %>
+	<div class="top">
+	<div id='<%=dom_id(story, 'drag_handle')%>' class='handle'><%=image_tag('handle.png', :width=>'18px') %></div>
+  <div class='field estimate'><%= h story.estimate %></div>
+  <div class='field title'><%= h story.title %></div>
+	</div>
+	<div class= "bottom">
+	  <div class='edit'><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></div>
+	  <div class='destroy'><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></div>
+	<div class='field'>
+	<div class='advance_button' id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></div>
+  <div id='<%=dom_id(story, "status")%>' class='status' ><%= story_status story%></div>
+	</div>
+  <div class='field body'><%= h story.body %></div>
 	<%=release_description_cell story, @release%>
-  <td class='edit'><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></td>
-  <td class='destroy'><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></td>
+	</div>
 	
 <% end%>
 <%= draggable_element dom_id(story), :ghosting=>true, :revert=>true%>

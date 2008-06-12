@@ -4,11 +4,9 @@
 <%= render :partial =>'new_remote'%>
 <script>$('remote_story_div').hide()</script>
 <% end%>
-<table class="stripy"> 
-	<tbody id='<%= @stories_container_id %>' class='stories'> 
+	<div id='<%= @stories_container_id %>' class='stripy stories'> 
   	<%= render :partial=>'story', :collection=>@stories %>
-	</tbody>
-</table>
+	</div>
 <%= new_story_link @release %>
 
 

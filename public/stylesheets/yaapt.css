@@ -51,7 +51,7 @@ div{
 	margin-top: 0;
 	background: #5B7876;
 	height:650px;
-/*	overflow: auto;*/
+	overflow: auto;
 }
 
 
@@ -122,26 +122,36 @@ a:hover{
 }
 
 
-table.stripy tr.odd td {
+.stripy 	.odd{
 	background: #8F9E8B;
+}
+
+.stripy .even  {
+	background: #F2E6B6;
+}
+
+.stripy .stripe {
+/*	height: 50px;*/
+}
+
+.story .top {
+	border-bottom: thin solid #A3A3A3;
+}
+
+.story .bottom{
+	clear: both;
 }
 
 a img{
 	border: none; 
 }
 
-table.stripy{
+.stripy{
 	width: 100%;
 }
-table.stripy td a{
-	display:block;
-}
 
 
-table.stripy tr.even td 
-{
-	background: #F2E6B6;
-}
+
 
 .new_story label, .edit_story label{
 	width: 80px;
@@ -153,36 +163,55 @@ table.stripy tr.even td
 	margin-bottom: 10px;
 }
 
-.stories td.handle,.stories td.edit,.stories td.destroy{
-	width: 20px;
+.story .field{
+	padding: 2px 5px;
+	display: block;
+	border-left: thin solid #A3A3A3;
+	float: left;
+	height: 40px;
+}
+.story .handle,.story .edit,.story .destroy{
+	width: 21px;
+	padding:  2px 5px;
+	float:left;
+	height: 40px;
+	border-left: thin solid #A3A3A3;
 }
 
 .handle{
 	cursor: move;
 }
 
-.stories td.title{
-	width: 200px;
-}
 
-.stories td.body{
+.stories .story{
+	border-bottom: thin solid #292929;
 	
 }
 
-.stories td.estimate{
-	width: 30px;
+.stories .title{
+}
+
+.stories .body{
+	overflow: auto;
+}
+
+.stories .estimate{
+	width: 21px;
+	text-align: right;
 	
 }
 
-.stories td.status{
-	width: 80px;
-	
+.stories .status, .stories .advance_button {
+	width: 80px;	
+	display: block;
+	height:25px;	
 }
 
-.stories td.advance_button{
-	width: 85px;
-	
+
+.stories .advance_button a{
+	display: block;
 }
+
 
 .remote_story input, .remote_story textarea {
 }

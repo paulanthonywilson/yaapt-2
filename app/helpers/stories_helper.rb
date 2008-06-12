@@ -20,7 +20,7 @@ module StoriesHelper
 
   def release_description_cell(story, release)
     unless release
-      "<td id='#{dom_id(story, 'release')}'>#{release_description_content(story)}</td>"
+      "<div id='#{dom_id(story, 'release')}'>#{release_description_content(story)}</div>"
     end
   end
   
