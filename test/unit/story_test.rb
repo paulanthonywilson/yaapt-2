@@ -6,6 +6,8 @@ class StoryTest < ActiveSupport::TestCase
 
   should_allow_values_for :status, 'unstarted', 'in_progress', 'done'
   should_not_allow_values_for :status, 'fish', 'nearly_done', '', :message=>/not included/
+  should_only_allow_numeric_values_for :estimate
+  should_allow_values_for :estimate, nil
 
   context "advancing a story" do
     setup do
