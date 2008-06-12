@@ -1,4 +1,5 @@
 @release = @story.release
+rjs_update_estimate_total page, @release
 page.insert_html :bottom, 'story_list', :partial=>'story.html.erb', :locals=>{:story=>@story}
 page << "restripe('story_list')"
 @story = nil
