@@ -2,7 +2,7 @@
 
 function restripe(restripe_me)
 {  
-	$$('#' + restripe_me + ' tr.stripe').each(function(element, i){
+	$$('#' + restripe_me + ' .stripe').each(function(element, i){
 			var className = i % 2 == 0 ? "odd" : "even"
 			element.removeClassName('odd')
 			element.removeClassName('even')
