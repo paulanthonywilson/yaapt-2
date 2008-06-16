@@ -1,3 +1,5 @@
+
+
 class Release < ActiveRecord::Base
   has_many :stories
   has_many :release_histories, :order=>'history_date'
@@ -22,7 +24,9 @@ class Release < ActiveRecord::Base
   end
 
   def to_burndown_graph
-    g = Gruff::Line.new
+    g = Gruff::Line.new(650)
+    g.hide_dots = true
+    g.hide_legend = true
     g.title = self.description
     if release_histories.empty?
       return g
@@ -31,11 +35,12 @@ class Release < ActiveRecord::Base
     data = release_histories.inject do |memo, obj| 
       memo = [memo] unless Array === memo
       while memo.last.history_date < obj.history_date.yesterday do
-        memo << date_and_total.new(memo.last.history_date.tomorrow, nil)
+        memo << date_and_total.new(memo.last.history_date.tomorrow, memo.last.estimate_total)
       end
       memo << date_and_total.new(obj.history_date, obj.estimate_total)
       memo
     end
+    data = [data] unless Array === data
     unless data.empty?
       while(data.last.history_date < release_date) do
         data << date_and_total.new(data.last.history_date.tomorrow, nil)

@@ -104,9 +104,13 @@ class ReleaseTest < ActiveSupport::TestCase
      assert_equal 31, @data_points.size
     end
     
-    should "have nil data items for days on which there is no release history" do
+    should "for days on which there is no release history, carry forward the previous release history value" do
       @release.to_burndown_graph
-      assert_equal nil, @data_points[5]
+      assert_equal 25, @data_points[5]
+    end
+    
+    should "fill with nil up to the release history date" do
+      @release.to_burndown_graph
       assert_equal nil, @data_points[30]
     end
     
@@ -138,6 +142,14 @@ class ReleaseTest < ActiveSupport::TestCase
     end
     
     should "do something sensible if there is no data" do
+      flexmock(Gruff::Line, :new=>flexmock('gruff expects nothing'))
+      releases(:midnight_snack).to_burndown_graph
+    end
+    
+    should "handle one datapoint ok" do
+      flexmock(Gruff::Line, :new=>flexmock('gruff expects nothing'))
+      releases(:midnight_snack).release_histories << 
+        ReleaseHistory.create(:history_date=>Date::civil(2008,5,1), :estimate_total=>10);
       releases(:midnight_snack).to_burndown_graph
     end
     
