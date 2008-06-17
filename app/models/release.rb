@@ -1,4 +1,14 @@
-
+class Gruff::AllLabelLine < Gruff::Line
+  def draw
+    super
+    return unless @has_data
+    @norm_data.each do |data_row|      
+      data_row[1].each_with_index do |data_point, index|
+        draw_label( @graph_left + (@x_increment * index), index)  if data_point.nil?
+      end
+    end
+  end
+end
 
 class Release < ActiveRecord::Base
   has_many :stories
@@ -24,7 +34,7 @@ class Release < ActiveRecord::Base
   end
 
   def to_burndown_graph
-    g = Gruff::Line.new(650)
+    g = Gruff::AllLabelLine.new(650)
     g.hide_dots = true
     g.hide_legend = true
     g.title = self.description
@@ -34,10 +44,12 @@ class Release < ActiveRecord::Base
     date_and_total = Struct.new(:history_date, :estimate_total)
     data = release_histories.inject do |memo, obj| 
       memo = [memo] unless Array === memo
-      while memo.last.history_date < obj.history_date.yesterday do
-        memo << date_and_total.new(memo.last.history_date.tomorrow, memo.last.estimate_total)
+      if obj &&  obj.history_date <= self.release_date
+        while memo.last.history_date < obj.history_date.yesterday do
+          memo << date_and_total.new(memo.last.history_date.tomorrow, memo.last.estimate_total)
+        end
+        memo << date_and_total.new(obj.history_date, obj.estimate_total)
       end
-      memo << date_and_total.new(obj.history_date, obj.estimate_total)
       memo
     end
     data = [data] unless Array === data

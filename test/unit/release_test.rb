@@ -96,7 +96,7 @@ class ReleaseTest < ActiveSupport::TestCase
       @gruff.should_ignore_missing
       @gruff.should_receive(:data).with("burndown",on { |data_points| @data_points = data_points} ) 
       @gruff.should_receive(:labels=).with(on { |labels| @labels = labels} ) 
-      flexmock(Gruff::Line, :new=>@gruff)
+      flexmock(Gruff::AllLabelLine, :new=>@gruff)
     end
 
     should "have a data item for each day between the earliest history entry and the release date" do
@@ -147,10 +147,16 @@ class ReleaseTest < ActiveSupport::TestCase
     end
     
     should "handle one datapoint ok" do
-      flexmock(Gruff::Line, :new=>flexmock('gruff expects nothing'))
+      flexmock(Gruff::AllLabelLine, :new=>flexmock('gruff expects nothing'))
       releases(:midnight_snack).release_histories << 
         ReleaseHistory.create(:history_date=>Date::civil(2008,5,1), :estimate_total=>10);
       releases(:midnight_snack).to_burndown_graph
+    end
+    
+    should "only graph up to the releasedate" do
+      @release.release_date = Date::civil(2008, 5, 2)
+      @release.to_burndown_graph
+      assert_equal 2, @data_points.size
     end
     
     
