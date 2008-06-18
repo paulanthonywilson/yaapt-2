@@ -3,3 +3,5 @@ db/schema.rb
 .DS_Store
 *.sqlite3
 doc
+config/database.yml
+config/environments/production.rb
