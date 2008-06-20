@@ -1,15 +1,3 @@
-class Gruff::AllLabelLine < Gruff::Line
-  def draw
-    super
-    return unless @has_data
-    @norm_data.each do |data_row|      
-      data_row[1].each_with_index do |data_point, index|
-        draw_label( @graph_left + (@x_increment * index), index)  if data_point.nil?
-      end
-    end
-  end
-end
-
 class Release < ActiveRecord::Base
   has_many :stories
   has_many :release_histories, :order=>'history_date'
@@ -34,38 +22,11 @@ class Release < ActiveRecord::Base
   end
 
   def to_burndown_graph
-    g = Gruff::AllLabelLine.new(650)
-    g.hide_dots = true
-    g.hide_legend = true
-    g.title = self.description
-    if release_histories.empty?
-      return g
-    end
-    date_and_total = Struct.new(:history_date, :estimate_total)
-    data = release_histories.inject do |memo, obj| 
-      memo = [memo] unless Array === memo
-      if obj &&  obj.history_date <= self.release_date
-        while memo.last.history_date < obj.history_date.yesterday do
-          memo << date_and_total.new(memo.last.history_date.tomorrow, memo.last.estimate_total)
-        end
-        memo << date_and_total.new(obj.history_date, obj.estimate_total)
-      end
-      memo
-    end
-    data = [data] unless Array === data
-    unless data.empty?
-      while(data.last.history_date < release_date) do
-        data << date_and_total.new(data.last.history_date.tomorrow, nil)
-      end
-    end
-    g.data("burndown", data.map(&:estimate_total))
-
-    labels = {}
-    1.step(data.size, data.size / 3.0) {|i| labels[i.round - 1]=data[i.round - 1].history_date.strftime('%d %b %Y')}
-    labels[data.size - 1] = data.last.history_date.strftime('%d %b %Y')
-    g.labels = labels
-    g.minimum_value=0
-    g
+    BurndownGraph.new do |g|
+      g.title = description
+      g.release_date = release_date
+      g.histories = release_histories
+    end.to_gruff
   end
 
   class << self

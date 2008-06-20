@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
+require 'burndown_graph'
 
 class ReleaseTest < ActiveSupport::TestCase
 
@@ -94,72 +95,13 @@ class ReleaseTest < ActiveSupport::TestCase
       @release = releases(:tea_and_biscuits)
       @gruff = flexmock('gruff')
       @gruff.should_ignore_missing
-      @gruff.should_receive(:data).with("burndown",on { |data_points| @data_points = data_points} ) 
-      @gruff.should_receive(:labels=).with(on { |labels| @labels = labels} ) 
       flexmock(Gruff::AllLabelLine, :new=>@gruff)
     end
-
-    should "have a data item for each day between the earliest history entry and the release date" do
-      @release.to_burndown_graph
-     assert_equal 31, @data_points.size
-    end
     
-    should "for days on which there is no release history, carry forward the previous release history value" do
-      @release.to_burndown_graph
-      assert_equal 25, @data_points[5]
-    end
-    
-    should "fill with nil up to the release history date" do
-      @release.to_burndown_graph
-      assert_equal nil, @data_points[30]
-    end
-    
-    should "have the estimate total for those days on which there is a release history" do
-      @release.to_burndown_graph
-      assert_equal 29, @data_points[0]
-      assert_equal 15, @data_points[18]
-    end
-    
-    
-    should "label the history dates which are first, last, 1/3 and 2/3" do
-      @release.to_burndown_graph
-      assert_equal({0=>'01 May 2008', 10=>'11 May 2008', 21=>'22 May 2008', 30=>'31 May 2008'}, @labels)
-    end
-
-    should "have the release description as its title" do
+    should "be an all label line graph" do
       @gruff.should_receive(:title=).with(@release.description).once
+      @gruff.should_receive(:data).with("burndown",on { |data_points| data_points.size == 31} ).once 
       @release.to_burndown_graph
     end
-    
-    
-    should "set the minimum value to 0" do
-      @gruff.should_receive(:minimum_value=).with(0).once
-      @release.to_burndown_graph
-    end
-    
-    should "return the gruff object" do
-      assert_equal @gruff, @release.to_burndown_graph
-    end
-    
-    should "do something sensible if there is no data" do
-      flexmock(Gruff::Line, :new=>flexmock('gruff expects nothing'))
-      releases(:midnight_snack).to_burndown_graph
-    end
-    
-    should "handle one datapoint ok" do
-      flexmock(Gruff::AllLabelLine, :new=>flexmock('gruff expects nothing'))
-      releases(:midnight_snack).release_histories << 
-        ReleaseHistory.create(:history_date=>Date::civil(2008,5,1), :estimate_total=>10);
-      releases(:midnight_snack).to_burndown_graph
-    end
-    
-    should "only graph up to the releasedate" do
-      @release.release_date = Date::civil(2008, 5, 2)
-      @release.to_burndown_graph
-      assert_equal 2, @data_points.size
-    end
-    
-    
   end
-
 end

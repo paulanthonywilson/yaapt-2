@@ -1,0 +1,88 @@
+class BurndownGraph
+  attr_writer :title, :histories, :release_date
+
+  def initialize(&block)
+    @histories=[]
+    yield self if block_given?
+  end
+
+  def to_gruff
+    g = Gruff::AllLabelLine.new(650)
+    g.hide_dots = true
+    g.hide_legend = true
+    g.title = @title
+    if @histories.empty?
+      return g
+    end
+    histories_to_graph = GraphedHistories.new(@histories).constrained_to_release_date(@release_date)
+    g.data("burndown", histories_to_graph.map(&:estimate_total))
+    g.minimum_value=0
+    g.labels = histories_to_graph.labels
+    g
+  end
+
+
+ 
+
+  private
+
+  class GraphedHistories < Array
+    @@date_and_total = Struct.new(:history_date, :estimate_total)
+    def initialize(histories)
+      super inflate(histories)
+    end
+    
+    def constrained_to_release_date(release_date)
+      do_not_graph_after(release_date)
+      fill_to_with_nil(release_date)
+      self
+    end
+    
+    def labels
+      labels = {}
+      1.step(size, size / 3.0) {|i| labels[i.round - 1]=self[i.round - 1].history_date.strftime('%d %b %Y')}
+      labels[size - 1] = last.history_date.strftime('%d %b %Y')
+      labels
+    end
+    
+    
+    private
+    
+    def inflate(compressed)
+      compressed.inject([]) do |expanded, history|
+        unless expanded.empty?
+          expanded.last.history_date.tomorrow.upto(history.history_date.yesterday) do |missing_date|
+            expanded << @@date_and_total.new(missing_date, expanded.last.estimate_total)
+          end
+        end
+        expanded << history
+      end
+    end
+    
+    def fill_to_with_nil(date)
+      unless empty?
+        while(last.history_date < date) do
+          self << @@date_and_total.new(last.history_date.tomorrow, nil)
+        end
+      end
+    end
+
+    def do_not_graph_after(release_date)
+      reject! {|history| history.history_date > release_date}
+    end
+    
+  end
+  
+end
+
+class Gruff::AllLabelLine < Gruff::Line
+  def draw
+    super
+    return unless @has_data
+    @norm_data.each do |data_row|      
+      data_row[1].each_with_index do |data_point, index|
+        draw_label( @graph_left + (@x_increment * index), index)  if data_point.nil?
+      end
+    end
+  end
+end
