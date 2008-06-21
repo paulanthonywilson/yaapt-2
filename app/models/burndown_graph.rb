@@ -33,8 +33,8 @@ class BurndownGraph
     end
     
     def constrained_to_release_date(release_date)
-      do_not_graph_after(release_date)
-      fill_to_with_nil(release_date)
+      do_not_graph_after release_date
+      fill_to release_date
       self
     end
     
@@ -59,10 +59,12 @@ class BurndownGraph
       end
     end
     
-    def fill_to_with_nil(date)
+    def fill_to(date)
       unless empty?
+        today = Date::today
         while(last.history_date < date) do
-          self << @@date_and_total.new(last.history_date.tomorrow, nil)
+          next_date = last.history_date.tomorrow
+          self << @@date_and_total.new(next_date, next_date < today ? last.estimate_total : nil)
         end
       end
     end

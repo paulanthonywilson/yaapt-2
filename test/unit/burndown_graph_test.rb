@@ -7,8 +7,6 @@ class BurndownGraphTest < Test::Unit::TestCase
   StubReleaseHistory = Struct.new(:history_date, :estimate_total)
 
   def setup
-    @now = Date::civil(2009,03,03)
-    flexmock(Date, :today=>@now)
     @release = releases(:tea_and_biscuits)
     @gruff = flexmock('gruff')
     @gruff.should_ignore_missing
@@ -77,7 +75,15 @@ class BurndownGraphTest < Test::Unit::TestCase
     end.to_gruff
   end
   
-  should "set the minimum value to 0 after setting the histores" do
+  should "fill to yesterday with latest previous history date" do
+    flexmock Date, :today=>Date::civil(2009,3,3)
+    @testee.histories=histories(['2009-03-1', 1])
+    @testee.release_date = Date::civil(2009,3,4)
+    @gruff.should_receive(:data).with("burndown", [1,1,nil,nil]).once
+    @testee.to_gruff
+  end
+  
+  should "set the minimum value to 0 after setting the histories" do
     @testee.histories=histories(['2009-03-1', 1])
     @testee.release_date = Date::civil(2009,3,1)
     @gruff.should_receive(:data).with("burndown", [1]).ordered.once
