@@ -27,7 +27,7 @@ class BurndownGraph
   private
 
   class GraphedHistories < Array
-    @@date_and_total = Struct.new(:history_date, :estimate_total)
+    @@date_and_total = Struct.new(:date, :estimate_total)
     def initialize(histories)
       super inflate(histories)
     end
@@ -40,8 +40,8 @@ class BurndownGraph
     
     def labels
       labels = {}
-      1.step(size, size / 3.0) {|i| labels[i.round - 1]=self[i.round - 1].history_date.strftime('%d %b %Y')}
-      labels[size - 1] = last.history_date.strftime('%d %b %Y')
+      1.step(size, size / 3.0) {|i| labels[i.round - 1]=self[i.round - 1].date.strftime('%d %b %Y')}
+      labels[size - 1] = last.date.strftime('%d %b %Y')
       labels
     end
     
@@ -51,7 +51,7 @@ class BurndownGraph
     def inflate(compressed)
       compressed.inject([]) do |expanded, history|
         unless expanded.empty?
-          expanded.last.history_date.tomorrow.upto(history.history_date.yesterday) do |missing_date|
+          expanded.last.date.tomorrow.upto(history.date.yesterday) do |missing_date|
             expanded << @@date_and_total.new(missing_date, expanded.last.estimate_total)
           end
         end
@@ -62,15 +62,15 @@ class BurndownGraph
     def fill_to(date)
       unless empty?
         today = Date::today
-        while(last.history_date < date) do
-          next_date = last.history_date.tomorrow
+        while(last.date < date) do
+          next_date = last.date.tomorrow
           self << @@date_and_total.new(next_date, next_date < today ? last.estimate_total : nil)
         end
       end
     end
 
     def do_not_graph_after(release_date)
-      reject! {|history| history.history_date > release_date}
+      reject! {|history| history.date > release_date}
     end
     
   end
