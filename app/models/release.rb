@@ -26,6 +26,7 @@ class Release < ActiveRecord::Base
       g.title = description
       g.release_date = release_date
       g.histories = release_histories
+      g.start_date = start_date
     end.to_gruff
   end
 

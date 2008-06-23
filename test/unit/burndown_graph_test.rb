@@ -83,6 +83,15 @@ class BurndownGraphTest < Test::Unit::TestCase
     @testee.to_gruff
   end
   
+  should "only graph from start date, if set" do
+    @testee.histories=histories(['2009-03-1', 5], ['2009-03-2', 6], ['2009-03-3', 7])
+    @testee.start_date = Date::civil(2009,3,2)
+    @testee.release_date = Date::civil(2009,3,3)
+    @gruff.should_receive(:data).with("burndown", [6,7]).once
+    @testee.to_gruff   
+    
+  end
+  
   should "set the minimum value to 0 after setting the histories" do
     @testee.histories=histories(['2009-03-1', 1])
     @testee.release_date = Date::civil(2009,3,1)

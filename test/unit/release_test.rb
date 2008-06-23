@@ -100,7 +100,7 @@ class ReleaseTest < ActiveSupport::TestCase
     
     should "be an all label line graph" do
       @gruff.should_receive(:title=).with(@release.description).once
-      @gruff.should_receive(:data).with("burndown",on { |data_points| data_points.size == 31} ).once 
+      @gruff.should_receive(:data).with("burndown",on { |data_points| data_points.size == 30} ).once 
       @release.to_burndown_graph
     end
   end

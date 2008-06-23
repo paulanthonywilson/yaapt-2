@@ -3,6 +3,7 @@
 tea_and_biscuits:
   name: Tea and biscuits
   release_date: 2008-05-31
+  start_date: 2008-05-02
 dinner_party:
   name: Dinner party
   release_date: 2008-06-21
