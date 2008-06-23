@@ -9,10 +9,6 @@ module StoriesHelper
     link_to_remote image_tag('advance.png', :alt=>'advance'), {:url=>advance_story_path(story), :method => :put}
   end
 
-  def submit_text(story)
-    return "Add story" if story.new_record?
-    "Update story"
-  end
 
   def new_story_link(release)
     link_to "Add story", release ? new_release_story_path(@release) : new_story_path

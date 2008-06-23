@@ -11,4 +11,10 @@ module ApplicationHelper
   def selected_link(text)
     content_tag 'span', text, :class=>'selected_link'
   end
+  
+  def submit_text(model)
+    return "Add #{model.class.to_s.downcase}" if model.new_record?
+    "Update #{model.class.to_s.downcase}"
+  end
+  
 end

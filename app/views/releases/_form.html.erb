@@ -6,7 +6,7 @@
 </div>
 <div>
 	<%= f.label :release_date, "Release Date"%>
-	<%= f.date_select :release_date %>  
+	<%= calendariffic_input(false, 'release[release_date]', 'calendariffic/date.png', 'start_cal', '%Y-%m-%d', @release.release_date , {:readonly => 'true'}, {:class => 'borderless'}) %>
 </div>
 <div>
 	<%= f.label :done, "Done" %>

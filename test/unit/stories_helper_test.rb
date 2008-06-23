@@ -27,12 +27,6 @@ class StoriesHelperTest < ActiveSupport::TestCase
     assert_equal '', advance_button(story)
   end
 
-  def test_submit_text
-    story = flexmock(Story.new)
-    assert_equal 'Add story', submit_text(story)
-    story.should_receive(:new_record?).and_return(false)
-    assert_equal 'Update story', submit_text(story)
-  end
 
   context "release description cell" do
 

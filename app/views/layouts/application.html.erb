@@ -6,7 +6,8 @@
   <title>Yet another Agile planning tool</title>
   <%= stylesheet_link_tag  'yaapt'%> 
   <%= javascript_include_tag :defaults %>
-
+	<%= javascript_include_tag 'calendariffic/calendar.js', 'calendariffic/calendar-setup.js', 'calendariffic/lang/calendar-en.js' %>
+<%= stylesheet_link_tag 'calendariffic/calendar-win2k-cold-1.css' %>
 </head>
 <body>
 	<div id="side">
@@ -56,7 +57,6 @@
 	
 	</div>
 	<div id="content-head">
-		<h1><%= title %><%=link_to image_tag('edit.png', :alt=>'edit'), edit_release_path(@release) if @release%></h1>
 		
 		
 		<%= yield :content_head %>

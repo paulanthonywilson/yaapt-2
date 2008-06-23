@@ -155,8 +155,8 @@ a img{
 
 
 
-.new_story label, .edit_story label{
-	width: 80px;
+.new_story label, .edit_story label, .edit_release label, .new_release label{
+	width: 90px;
 	display: block;
 	float:left;
 }

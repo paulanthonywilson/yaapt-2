@@ -1,6 +1,13 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReleasesControllerTest < ActionController::TestCase
+  class << self
+    def should_not_have_edit_release_link
+      should "not have edit release link" do
+        assert_select "a img[alt='edit']", :count=>0
+      end
+    end
+  end
 
   context "sunny day resources" do  
     setup do
@@ -83,6 +90,24 @@ class ReleasesControllerTest < ActionController::TestCase
     should "assign to story" do
       assert_equal @story, assigns(:story)
     end
+  end
+  
+  context "new relase form" do
+    setup do
+      get :new
+    end
+    
+   should_have_text_on_submit_button('Add release')
+   should_not_have_edit_release_link
+  end
+  
+  context "update release form" do
+     setup do
+       get :edit, :id=>releases(:tea_and_biscuits)
+     end
+
+    should_have_text_on_submit_button('Update release')
+    should_not_have_edit_release_link
   end
 
 end

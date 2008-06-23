@@ -63,16 +63,33 @@ class StoriesControllerTest < ActionController::TestCase
       assert_link edit_release_path(@release)
     end
     
-    should "have form for new story" do
-      assert_select "form#new_story"
-    end
     
     should "include a hidden field in new story form for the release id" do
       assert_select "form#new_story input#story_release_id[value='#{@release.id}']"
     end
     
+    should_link_to 'burndown_release_path(releases(:tea_and_biscuits))'
+
+    should "contain advance link for unfinished stories" do
+      assert_advance_button_count_for_story 1, :make_tea
+    end
+
+    should "not contain advance link for done stories" do
+      assert_advance_button_count_for_story 0, :biscuits
+    end
+
+    should "contain stories in dom id 'story_list'" do
+      assert_select "#story_list #story_#{stories(:make_tea).id}"
+    end
+    
     should_not_assign_to(:listing_all_stories)
     should_not_assign_to(:listing_unassigned_stories)
+    should_have_form(:new_story)
+    should_have_text_on_submit_button('Add story')
+    should "have release_id in add story form" do
+      assert_select "form#new_story input#story_release_id[value='#{@release.id}']"
+    end
+    
 
   end
 
@@ -131,34 +148,15 @@ class StoriesControllerTest < ActionController::TestCase
       assert_select "#story_list #story_#{stories(:slaughter_ox).id}"
     end
 
-    should "have form for new story" do
-      assert_select "form#new_story"
-    end
+    should_have_form(:new_story)
     should_not_assign_to(:listing_all_stories)
     should_assign_to(:listing_unassigned_stories)
+    should_have_text_on_submit_button('Add story')
+    
+
     
   end
 
-  context "index with release" do
-    setup do
-      get :index, :release_id=>releases(:tea_and_biscuits)
-    end
-
-    should_link_to 'burndown_release_path(releases(:tea_and_biscuits))'
-
-    should "contain advance link for unfinished stories" do
-      assert_advance_button_count_for_story 1, :make_tea
-    end
-
-    should "not contain advance link for done stories" do
-      assert_advance_button_count_for_story 0, :biscuits
-    end
-
-    should "contain stories in dom id 'story_list'" do
-      assert_select "#story_list #story_#{stories(:make_tea).id}"
-    end
-
-  end
 
 
   context "advancing a story" do
@@ -176,7 +174,7 @@ class StoriesControllerTest < ActionController::TestCase
     end
   end
 
-  context "new story for release" do
+  context "creating story for release" do
     setup do
       @release = releases(:tea_and_biscuits)
       @release_story_count = @release.stories.count
@@ -204,10 +202,15 @@ class StoriesControllerTest < ActionController::TestCase
     should_redirect_to 'unassigned_stories_path'
   end
   
+  
+  
+
+  
   private
   def assert_advance_button_count_for_story(expected_count, story)
     assert_select "#story_#{stories(story).id} a img[alt='advance']" , {:count=>expected_count}, "Advance link for story"
   end
+  
 
 
 end

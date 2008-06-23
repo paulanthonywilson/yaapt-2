@@ -41,6 +41,17 @@ class ActionController::TestCase
         assert_link eval(link.to_s)
       end
     end
+    def should_have_text_on_submit_button(text) 
+      should "have '#{text}' on submit button" do
+        assert_select "input[type='submit'][value='#{text}']"
+      end
+    end
+    
+    def should_have_form(form_name)
+      should "have form '#{form_name}'" do
+         assert_select "form##{form_name}"
+      end
+    end
     
   end
 end
