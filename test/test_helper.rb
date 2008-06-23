@@ -51,6 +51,20 @@ class ActionController::TestCase
       should "have form '#{form_name}'" do
          assert_select "form##{form_name}"
       end
+      @form_name = form_name
+      yield if block_given?
+      @form_name = nil
+    end
+    
+    def with_field field
+      form_name = @form_name
+      should "have field #{field} in form #{form_name}" do
+        assert_select "form##{form_name} input[name='#{field}']"
+      end
+    end
+    
+    def with_fields *fields
+      fields.each {|field| with_field field}
     end
     
   end

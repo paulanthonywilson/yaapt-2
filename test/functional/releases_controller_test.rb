@@ -7,6 +7,10 @@ class ReleasesControllerTest < ActionController::TestCase
         assert_select "a img[alt='edit']", :count=>0
       end
     end
+    
+    def should_have_release_form_fields(form_id)
+      should_have_form(form_id) {with_fields  'release[release_date]', 'release[name]', 'release[done]', 'release[start_date]'}
+    end
   end
 
   context "sunny day resources" do  
@@ -99,6 +103,8 @@ class ReleasesControllerTest < ActionController::TestCase
     
    should_have_text_on_submit_button('Add release')
    should_not_have_edit_release_link
+   
+   should_have_release_form_fields "new_release"
   end
   
   context "update release form" do
@@ -108,6 +114,7 @@ class ReleasesControllerTest < ActionController::TestCase
 
     should_have_text_on_submit_button('Update release')
     should_not_have_edit_release_link
+    should_have_release_form_fields "edit_release_#{Fixtures.identify(:tea_and_biscuits)}"
   end
 
 end
