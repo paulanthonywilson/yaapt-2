@@ -163,7 +163,7 @@ class StoriesControllerTest < ActionController::TestCase
     should "update status unstarted to in_progress" do
       put :advance, :id=>stories(:make_tea)
       assert_equal 'in_progress', stories(:make_tea).reload.status
-      assert_match /update.*in_progress/, @response.body
+      assert_template 'advance'
     end
 
     should "fail for status done" do

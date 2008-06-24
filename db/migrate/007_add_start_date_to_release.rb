@@ -4,6 +4,6 @@ class AddStartDateToRelease < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :release, :start_date
+    remove_column :releases, :start_date
   end
 end

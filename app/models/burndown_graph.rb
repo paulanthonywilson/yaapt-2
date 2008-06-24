@@ -17,7 +17,7 @@ class BurndownGraph
     histories_to_graph = GraphedHistories.new(@histories).
     constrained_to_release_date(@release_date).
     constrained_to_start_date(@start_date)
-    g.data("burndown", histories_to_graph.map(&:estimate_total))
+    g.data("burndown", histories_to_graph.map(&:left_todo))
     g.minimum_value=0
     g.labels = histories_to_graph.labels
     g
@@ -29,7 +29,7 @@ class BurndownGraph
   private
 
   class GraphedHistories < Array
-    @@date_and_total = Struct.new(:date, :estimate_total)
+    @@date_and_total = Struct.new(:date, :left_todo)
     def initialize(histories)
       super inflate(histories)
     end
@@ -59,7 +59,7 @@ class BurndownGraph
       compressed.inject([]) do |expanded, history|
         unless expanded.empty?
           expanded.last.date.tomorrow.upto(history.date.yesterday) do |missing_date|
-            expanded << @@date_and_total.new(missing_date, expanded.last.estimate_total)
+            expanded << @@date_and_total.new(missing_date, expanded.last.left_todo)
           end
         end
         expanded << history
@@ -71,7 +71,7 @@ class BurndownGraph
         today = Date::today
         while(last.date < date) do
           next_date = last.date.tomorrow
-          self << @@date_and_total.new(next_date, next_date < today ? last.estimate_total : nil)
+          self << @@date_and_total.new(next_date, next_date < today ? last.left_todo : nil)
         end
       end
     end

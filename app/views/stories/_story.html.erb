@@ -1,4 +1,4 @@
-<% content_tag_for(:div, story, :class=>"#{cycle('odd', 'even')} stripe") do %>
+<% content_tag_for(:div, story, :class=>"#{cycle('odd', 'even')} stripe #{story.status}") do %>
 	<div class="top">
 	<div id='<%=dom_id(story, 'drag_handle')%>' class='handle'><%=image_tag('handle.png', :width=>'18px') %></div>
   <div class='field estimate'><%= h story.estimate %></div>
@@ -8,7 +8,7 @@
 	  <div class='edit'><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></div>
 	  <div class='destroy'><%= link_to image_tag('destroy.png', :alt=>'destroy'), story_path(story), :confirm => 'Delete story?', :method => :delete %></div>
 	<div class='field'>
-	<div class='advance_button' id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story)%></div>
+	<div class='advance_button' id='<%=dom_id(story, 'advance_button')%>'><%= advance_button(story, @release)%></div>
   <div id='<%=dom_id(story, "status")%>' class='status' ><%= story_status story%></div>
 	</div>
   <div class='field body'><%= h story.body %></div>

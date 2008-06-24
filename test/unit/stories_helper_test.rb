@@ -12,20 +12,30 @@ class StoriesHelperTest < ActiveSupport::TestCase
     assert_equal "<span class='h'd(unstarted)'>h'd(unstarted)</span>", story_status(story)
   end
 
-  def test_advance_button
+  def test_advance_button_for_unstarted_story
     story = Story.new(:id=>25, :status=>'unstarted', :release_id=>1)
-    assert_match /link_to_remote\(.*advance.*\)/, advance_button(story)
+    assert_match /link_to_remote\(.*advance.*\)/, advance_button(story, Release.new)
   end
+  
+  
 
   def test_advance_button_not_shown_for_done_stories
     story = Story.new(:id=>25, :status=>'done')
-    assert_equal '', advance_button(story)
+    assert_equal '', advance_button(story, nil)
   end
 
   def test_advance_button_not_shown_for_stories_without_release
     story = Story.new(:id=>25, :status=>'unstarted')
-    assert_equal '', advance_button(story)
+    assert_equal '', advance_button(story, nil)
   end
+  
+  def test_advance_button_not_shown_if_release_not_provided
+    story = Story.new(:id=>25, :status=>'unstarted', :release_id=>1)
+    assert_equal '', advance_button(story, nil)
+  end
+  
+  
+  
 
 
   context "release description cell" do

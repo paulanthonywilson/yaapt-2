@@ -58,14 +58,14 @@ class ReleaseTest < ActiveSupport::TestCase
     should_be_ordered_descending_by_release_date
   end
 
-  context "estimate_total" do
+  context "left_todo" do
     should "be total of estimates of stories that are not done" do
-      assert_equal 3, releases(:tea_and_biscuits).estimate_total
+      assert_equal 3, releases(:tea_and_biscuits).left_todo
     end
     
     should "consider nil estimate to be zero" do
       releases(:tea_and_biscuits).stories << Story.new
-      assert_equal 3, releases(:tea_and_biscuits).estimate_total
+      assert_equal 3, releases(:tea_and_biscuits).left_todo
     end
   end
 
@@ -78,15 +78,15 @@ class ReleaseTest < ActiveSupport::TestCase
 
     should "populate event history for the day with the estimate total" do
       @release.notify_story_change
-      assert_equal 3, @release.release_histories.find_by_history_date(@today).estimate_total
+      assert_equal 3, @release.release_histories.find_by_history_date(@today).left_todo
     end
 
     should "only create one entry per day" do
-      @release.release_histories.create(:estimate_total=>5, :history_date=>@today)
+      @release.release_histories.create(:left_todo=>5, :history_date=>@today)
       @release.notify_story_change
       today_histories = @release.release_histories.find_all_by_history_date(@today)
       assert_equal 1, today_histories.size
-      assert_equal 3, today_histories.first.estimate_total
+      assert_equal 3, today_histories.first.left_todo
     end
   end
   
@@ -104,4 +104,6 @@ class ReleaseTest < ActiveSupport::TestCase
       @release.to_burndown_graph
     end
   end
+  
+  
 end

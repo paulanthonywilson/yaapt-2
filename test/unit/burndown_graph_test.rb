@@ -4,7 +4,7 @@ require 'burndown_graph'
 
 class BurndownGraphTest < Test::Unit::TestCase
 
-  StubReleaseHistory = Struct.new(:date, :estimate_total)
+  StubReleaseHistory = Struct.new(:date, :left_todo)
 
   def setup
     @release = releases(:tea_and_biscuits)

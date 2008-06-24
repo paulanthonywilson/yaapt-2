@@ -152,6 +152,17 @@ a img{
 	width: 100%;
 }
 
+div.done{
+	border-left:  solid green;
+	text-decoration: line-through;	
+}
+
+div.unstarted{
+	border-left:  solid red;
+}
+div.in_progress{
+	border-left: solid yellow;
+}
 
 
 

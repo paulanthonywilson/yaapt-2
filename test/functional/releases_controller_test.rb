@@ -116,5 +116,8 @@ class ReleasesControllerTest < ActionController::TestCase
     should_not_have_edit_release_link
     should_have_release_form_fields "edit_release_#{Fixtures.identify(:tea_and_biscuits)}"
   end
+  
+  
+  
 
 end

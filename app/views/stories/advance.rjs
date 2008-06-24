@@ -1,4 +1,7 @@
-page[dom_id(@story, 'status')].replace_html(story_status(@story)).visual_effect(:highlight)
-page[dom_id(@story, 'advance_button')].replace_html(advance_button(@story))
+@release = @story.release
+page[dom_id(@story)].replace(render(:partial=>'story'))
+#page[dom_id(@story, 'advance_button')].replace_html(advance_button(@story))
+page << "restripe('story_list')"
+page[dom_id(@story)].visual_effect(:highlight, :duration=>3)
 
-rjs_update_estimate_total page, @story.release
+rjs_update_left_todo page, @story.release
