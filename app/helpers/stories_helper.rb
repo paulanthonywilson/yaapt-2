@@ -5,7 +5,6 @@ module StoriesHelper
 
   def advance_button(story, release=nil)
     return "" if story.status == 'done'
-    return "" unless story.release_id
     return "" unless release
     link_to_remote image_tag('advance.png', :alt=>'advance'), {:url=>advance_story_path(story), :method => :put}
   end

@@ -21,14 +21,9 @@ class StoriesHelperTest < ActiveSupport::TestCase
 
   def test_advance_button_not_shown_for_done_stories
     story = Story.new(:id=>25, :status=>'done')
-    assert_equal '', advance_button(story, nil)
+    assert_equal '', advance_button(story, Release.new)
   end
-
-  def test_advance_button_not_shown_for_stories_without_release
-    story = Story.new(:id=>25, :status=>'unstarted')
-    assert_equal '', advance_button(story, nil)
-  end
-  
+ 
   def test_advance_button_not_shown_if_release_not_provided
     story = Story.new(:id=>25, :status=>'unstarted', :release_id=>1)
     assert_equal '', advance_button(story, nil)

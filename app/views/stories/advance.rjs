@@ -1,6 +1,5 @@
 @release = @story.release
 page[dom_id(@story)].replace(render(:partial=>'story'))
-#page[dom_id(@story, 'advance_button')].replace_html(advance_button(@story))
 page << "restripe('story_list')"
 page[dom_id(@story)].visual_effect(:highlight, :duration=>3)
 
