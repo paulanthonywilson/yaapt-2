@@ -13,6 +13,8 @@ class BurndownGraphTest < Test::Unit::TestCase
     flexmock(Gruff::AllLabelLine, :new=>@gruff)
     @testee = BurndownGraph.new
   end
+  
+ 
 
   should "have a title" do
     @testee.title = "hello title"

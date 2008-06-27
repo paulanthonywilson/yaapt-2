@@ -3,6 +3,12 @@ class Release < ActiveRecord::Base
   has_many :release_histories, :order=>'history_date'
   validates_presence_of :release_date
 
+  %w(done in_progress unstarted).each do |status|
+    define_method "#{status}_stories" do 
+      stories.find_all{|story| story.status == status}
+    end
+  end
+
   def description
     return release_date.to_s if name.blank?
     "#{release_date} - #{name}"
@@ -10,6 +16,9 @@ class Release < ActiveRecord::Base
 
   def left_todo
     stories.reject(&:done?).map{|story| story.estimate ? story.estimate : 0}.sum
+  end
+  def total_done
+    stories.find_all(&:done?).map{|story| story.estimate ? story.estimate : 0}.sum
   end
 
   def notify_story_change
@@ -21,13 +30,13 @@ class Release < ActiveRecord::Base
     end
   end
 
-  def to_burndown_graph
+  def to_burndown_graph(size=650, format='png')
     BurndownGraph.new do |g|
       g.title = description
       g.release_date = release_date
       g.histories = release_histories
       g.start_date = start_date
-    end.to_gruff
+    end.to_gruff(size).to_blob(format)
   end
 
   class << self

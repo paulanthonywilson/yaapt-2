@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class StoriesControllerTest < ActionController::TestCase
   NEW_STORY_PARAMS={ :title=>'A new story', :body=>'as a developer I want this test to pass', :estimate=>1}
-  NEW_STORY_PARAMS_WITH_RELEASE=NEW_STORY_PARAMS.merge(:release_id=>Fixtures.identify(:tea_and_biscuits))
+  NEW_STORY_PARAMS_WITH_RELEASE=NEW_STORY_PARAMS.merge(:release_id=>Fixtures::identify(:tea_and_biscuits))
   
   
   context "stories with release" do

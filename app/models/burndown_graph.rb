@@ -6,8 +6,8 @@ class BurndownGraph
     yield self if block_given?
   end
 
-  def to_gruff
-    g = Gruff::AllLabelLine.new(650)
+  def to_gruff(size=650)
+    g = Gruff::AllLabelLine.new(size)
     g.hide_dots = true
     g.hide_legend = true
     g.title = @title

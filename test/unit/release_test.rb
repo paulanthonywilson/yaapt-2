@@ -62,10 +62,20 @@ class ReleaseTest < ActiveSupport::TestCase
     should "be total of estimates of stories that are not done" do
       assert_equal 3, releases(:tea_and_biscuits).left_todo
     end
-    
+
     should "consider nil estimate to be zero" do
       releases(:tea_and_biscuits).stories << Story.new
       assert_equal 3, releases(:tea_and_biscuits).left_todo
+    end
+  end
+  context "done" do
+    should "be total of estimates of stories that are done" do
+      assert_equal 2, releases(:tea_and_biscuits).total_done
+    end
+
+    should "consider nil estimate to be zero" do
+      releases(:tea_and_biscuits).stories << Story.new(:status=>'done')
+      assert_equal 2, releases(:tea_and_biscuits).total_done
     end
   end
 
@@ -89,21 +99,54 @@ class ReleaseTest < ActiveSupport::TestCase
       assert_equal 3, today_histories.first.left_todo
     end
   end
-  
+
   context "burndown graph" do
     setup do
       @release = releases(:tea_and_biscuits)
       @gruff = flexmock('gruff')
+      @gruff.should_receive(:to_blob).with('png').and_return('blobby')
       @gruff.should_ignore_missing
-      flexmock(Gruff::AllLabelLine, :new=>@gruff)
+      
+      flexmock(Gruff::AllLabelLine).should_receive(:new).with(650).and_return(@gruff)
     end
-    
+
     should "be an all label line graph" do
       @gruff.should_receive(:title=).with(@release.description).once
       @gruff.should_receive(:data).with("burndown",on { |data_points| data_points.size == 30} ).once 
-      @release.to_burndown_graph
+      assert_equal 'blobby', @release.to_burndown_graph
+    end
+    
+    should "be able to specify the size" do
+      flexmock(Gruff::AllLabelLine).should_receive(:new).with(260).and_return(@gruff).once
+      @release.to_burndown_graph(260)
+    end
+    
+    should "be able to specify the format" do
+      @gruff.should_receive(:to_blob).with('jpeg').and_return('jpegy').once
+      #assert_equal 'jpegy',
+       @release.to_burndown_graph(650, 'jpeg')
     end
   end
-  
-  
+
+  context "story lists" do
+    setup do
+      @release = releases(:tea_and_biscuits)
+    end
+    
+    should "have only done stories in done  list" do
+      assert_equal([stories(:biscuits)], @release.done_stories)
+    end
+
+    should "have only unstarted stories in unstarted  list" do
+      assert_equal([stories(:make_tea)], @release.unstarted_stories)
+    end
+
+    should "have only in-progress stories in in-progress list" do
+      assert_equal([stories(:make_coffee)], @release.in_progress_stories)
+    end
+
+  end
+
+
 end
+

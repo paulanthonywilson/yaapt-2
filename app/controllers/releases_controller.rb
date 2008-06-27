@@ -41,10 +41,14 @@ class ReleasesController < ApplicationController
   end
 
   def burndown_image
-    send_data( @release.to_burndown_graph.to_blob, 
+    send_data( @release.to_burndown_graph, 
       :disposition => 'inline', 
       :type => 'image/png', 
-      :filename => "my_fruity_graph.png")
+      :filename => "burndown.png")
+  end
+  
+  def mail_summary
+    ReleaseMailer.summary
   end
 
 private 

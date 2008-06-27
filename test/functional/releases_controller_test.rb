@@ -117,6 +117,20 @@ class ReleasesControllerTest < ActionController::TestCase
     should_have_release_form_fields "edit_release_#{Fixtures.identify(:tea_and_biscuits)}"
   end
   
+  context "burndown image" do
+    setup do
+      @release = flexmock("release", :to_burndown_graph=>"my graph")
+      flexmock(Release).should_receive(:find).and_return(@release)
+      get :burndown_image, :id=>555
+    end
+    
+    should "serve the image as an inline png" do
+      assert_equal "my graph", @response.body
+      assert_equal "image/png", @response.headers['type']
+      assert_equal 'inline; filename="burndown.png"', @response.headers['Content-Disposition']
+    end
+    
+  end
   
   
 
