@@ -84,10 +84,6 @@ class ReleaseTest < ActiveSupport::TestCase
   
   
 
-  
-  
-  
-
   context "notify_story_change" do
     setup do
       @release = releases(:tea_and_biscuits)
@@ -98,14 +94,16 @@ class ReleaseTest < ActiveSupport::TestCase
     should "populate event history for the day with the estimate total" do
       @release.notify_story_change
       assert_equal 3, @release.release_histories.find_by_history_date(@today).total_todo
+      assert_equal 5, @release.release_histories.find_by_history_date(@today).total_estimate
     end
 
     should "only create one entry per day" do
-      @release.release_histories.create(:total_todo=>5, :history_date=>@today)
+      @release.release_histories.create(:total_todo=>5, :total_estimate=>10, :history_date=>@today)
       @release.notify_story_change
       today_histories = @release.release_histories.find_all_by_history_date(@today)
       assert_equal 1, today_histories.size
       assert_equal 3, today_histories.first.total_todo
+      assert_equal 5, today_histories.first.total_estimate
     end
   end
 

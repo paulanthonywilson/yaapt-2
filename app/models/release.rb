@@ -28,9 +28,9 @@ class Release < ActiveRecord::Base
   def notify_story_change
     history_today = release_histories.find_by_history_date(Date::today)
     if (history_today)
-      history_today.update_attributes(:total_todo=>total_todo)
+      history_today.update_attributes(:total_todo=>total_todo, :total_estimate=>total_estimate)
     else
-      release_histories.create(:total_todo=>total_todo, :history_date=>Date::today)
+      release_histories.create(:total_todo=>total_todo,  :total_estimate=>total_estimate, :history_date=>Date::today)
     end
   end
 
