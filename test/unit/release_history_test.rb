@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReleaseHistoryTest < ActiveSupport::TestCase
-  should_have_db_columns :history_date, :left_todo
+  should_have_db_columns :history_date, :total_todo
   should_belong_to :release
   
   

@@ -4,12 +4,12 @@ day=1
 1.upto(15) do |i| %>
 tea_and_biscuits_day_<%=i%>:
   history_date: 2008-05-<%=day%>
-  left_todo: <%= 30 - i %>
+  total_todo: <%= 30 - i %>
   release: tea_and_biscuits
 <% 
   day+= i % 5 == 0 ? 3 : 1
 end %>
 dinner_party_day_1:
   history_date: '2008-06-03'
-  left_todo: 9.99
+  total_todo: 9.99
   release: dinner_party

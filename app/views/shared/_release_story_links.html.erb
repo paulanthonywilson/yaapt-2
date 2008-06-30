@@ -2,7 +2,7 @@
 if @release 
 	content_for(:content_head) do %>
 	<h1><%= title %><%=link_to image_tag('edit.png', :alt=>'edit'), edit_release_path(@release) if @release  %></h1>
-<p>Estimated todo: <%= content_tag :span,  @release.left_todo, :id=>dom_id(@release, 'left_todo') %></p>
+<p>Estimated todo: <%= content_tag :span,  @release.total_todo, :id=>dom_id(@release, 'total_todo') %></p>
 <p>
 <%=link_to 'stories', release_stories_path(@release)%>
 <%=link_to "burndown", burndown_release_path(@release)%>

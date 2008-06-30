@@ -1,5 +1,5 @@
 @release = @story.release
-rjs_update_left_todo page, @release
+rjs_update_total_todo page, @release
 page.insert_html :top, 'story_list', :partial=>'story.html.erb', :locals=>{:story=>@story}
 page << "restripe('story_list')"
 @story = nil

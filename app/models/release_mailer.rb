@@ -16,7 +16,7 @@ class ReleaseMailer < ActionMailer::Base
       <h1>#{release.name} - status summary</h1>
       <p>Status summary for release <span id='release_name'>#{release.name}</span> due on 
       <span id='release_date'>#{release.release_date.strftime('%d %B %Y')}</span>.</p>
-      <p>Todo: <span id='todo'>#{release.left_todo}</span>
+      <p>Todo: <span id='todo'>#{release.total_todo}</span>
       <br/>
       Done: <span id='done'>#{release.total_done}</span></p>
       <br/>

@@ -4,8 +4,8 @@ module ApplicationHelper
     error_messages_for object, {:header_message=>nil, :message=>nil}
   end  
   
-  def rjs_update_left_todo(page, release)
-    page.select('#' + dom_id(release, 'left_todo')).each {|item| item.update(release.left_todo)} if release
+  def rjs_update_total_todo(page, release)
+    page.select('#' + dom_id(release, 'total_todo')).each {|item| item.update(release.total_todo)} if release
   end 
   
   def selected_link(text)

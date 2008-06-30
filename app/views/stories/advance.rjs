@@ -3,4 +3,4 @@ page[dom_id(@story)].replace(render(:partial=>'story'))
 page << "restripe('story_list')"
 page[dom_id(@story)].visual_effect(:highlight, :duration=>3)
 
-rjs_update_left_todo page, @story.release
+rjs_update_total_todo page, @story.release

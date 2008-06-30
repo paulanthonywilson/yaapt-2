@@ -14,7 +14,7 @@ class Release < ActiveRecord::Base
     "#{release_date} - #{name}"
   end
 
-  def left_todo
+  def total_todo
     stories.reject(&:done?).map{|story| story.estimate ? story.estimate : 0}.sum
   end
   def total_done
@@ -24,9 +24,9 @@ class Release < ActiveRecord::Base
   def notify_story_change
     history_today = release_histories.find_by_history_date(Date::today)
     if (history_today)
-      history_today.update_attributes(:left_todo=>left_todo)
+      history_today.update_attributes(:total_todo=>total_todo)
     else
-      release_histories.create(:left_todo=>left_todo, :history_date=>Date::today)
+      release_histories.create(:total_todo=>total_todo, :history_date=>Date::today)
     end
   end
 

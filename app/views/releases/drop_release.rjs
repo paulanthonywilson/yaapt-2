@@ -8,4 +8,4 @@ page << <<-EOS
   })
   restripe('story_list')
 EOS
-rjs_update_left_todo page, @previous_release
+rjs_update_total_todo page, @previous_release
