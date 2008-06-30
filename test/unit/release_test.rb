@@ -58,8 +58,8 @@ class ReleaseTest < ActiveSupport::TestCase
     should_be_ordered_descending_by_release_date
   end
 
-  context "total_todo" do
-    should "be total of estimates of stories that are not done" do
+  context "release totals" do
+    should "provide total of estimates of stories that are not done in 'total_todo'" do
       assert_equal 3, releases(:tea_and_biscuits).total_todo
     end
 
@@ -67,17 +67,26 @@ class ReleaseTest < ActiveSupport::TestCase
       releases(:tea_and_biscuits).stories << Story.new
       assert_equal 3, releases(:tea_and_biscuits).total_todo
     end
-  end
-  context "done" do
-    should "be total of estimates of stories that are done" do
-      assert_equal 2, releases(:tea_and_biscuits).total_done
+    
+    should "include in_progress in 'total_todo'" do
+      releases(:tea_and_biscuits).stories << Story.new(:estimate=>4, :status=>'in_progress')
+      assert_equal 7, releases(:tea_and_biscuits).total_todo
+    end
+    
+    should "provide the total estimate in 'total_estimate" do
+      assert_equal 5, releases(:tea_and_biscuits).total_estimate
     end
 
-    should "consider nil estimate to be zero" do
-      releases(:tea_and_biscuits).stories << Story.new(:status=>'done')
+    should "provide the total estimate of stories that are done in 'total_done'" do
       assert_equal 2, releases(:tea_and_biscuits).total_done
     end
   end
+  
+  
+
+  
+  
+  
 
   context "notify_story_change" do
     setup do

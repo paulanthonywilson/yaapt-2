@@ -20,6 +20,10 @@ class Release < ActiveRecord::Base
   def total_done
     stories.find_all(&:done?).map{|story| story.estimate ? story.estimate : 0}.sum
   end
+  
+  def total_estimate
+    total_todo + total_done
+  end
 
   def notify_story_change
     history_today = release_histories.find_by_history_date(Date::today)
