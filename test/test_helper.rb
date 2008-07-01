@@ -11,10 +11,16 @@ class Test::Unit::TestCase
   def self.test(name, &body) 
     define_method("test #{name}", body)
   end
-  
+
   def assert_include?(includer, includee)
     assert includer.include?(includee), "expecting '#{includer.inspect}' to include '#{includee.inspect}'"
   end 
+
+  class << self
+    def xshould(*args)
+    end
+  end
+
 end  
 
 class ActionController::TestCase
@@ -22,7 +28,7 @@ class ActionController::TestCase
   def assert_link(link)
     assert_select "a[href='#{link}']"    
   end 
-   
+
 
 
   class << self
@@ -35,7 +41,7 @@ class ActionController::TestCase
         end
       end
     end
-    
+
     def should_link_to(link)
       should "link to #{link}" do
         assert_link eval(link.to_s)
@@ -46,26 +52,27 @@ class ActionController::TestCase
         assert_select "input[type='submit'][value='#{text}']"
       end
     end
-    
+
     def should_have_form(form_name)
       should "have form '#{form_name}'" do
-         assert_select "form##{form_name}"
+        assert_select "form##{form_name}"
       end
       @form_name = form_name
       yield if block_given?
       @form_name = nil
     end
-    
+
     def with_field field
       form_name = @form_name
       should "have field #{field} in form #{form_name}" do
         assert_select "form##{form_name} input[name='#{field}']"
       end
     end
-    
+
     def with_fields *fields
       fields.each {|field| with_field field}
     end
-    
+
+
   end
 end

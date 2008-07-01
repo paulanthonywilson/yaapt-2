@@ -9,15 +9,15 @@ class BurndownGraph
   def to_gruff(size=650)
     g = Gruff::AllLabelLine.new(size)
     g.hide_dots = true
-    g.hide_legend = true
     g.title = @title
-    if @histories.empty?
-      return g
-    end
+
+    return g if @histories.empty?
+
     histories_to_graph = GraphedHistories.new(@histories).
     constrained_to_release_date(@release_date).
     constrained_to_start_date(@start_date)
-    g.data("burndown", histories_to_graph.map(&:total_todo))
+    g.data("todo", histories_to_graph.map(&:total_todo))
+    g.data("totals", histories_to_graph.map(&:total_estimate))
     g.minimum_value=0
     g.labels = histories_to_graph.labels
     g
@@ -29,7 +29,7 @@ class BurndownGraph
   private
 
   class GraphedHistories < Array
-    @@date_and_total = Struct.new(:date, :total_todo)
+    @@date_and_total = Struct.new(:date, :total_todo, :total_estimate)
     def initialize(histories)
       super inflate(histories)
     end
@@ -59,7 +59,7 @@ class BurndownGraph
       compressed.inject([]) do |expanded, history|
         unless expanded.empty?
           expanded.last.date.tomorrow.upto(history.date.yesterday) do |missing_date|
-            expanded << @@date_and_total.new(missing_date, expanded.last.total_todo)
+            expanded << @@date_and_total.new(missing_date, expanded.last.total_todo, expanded.last.total_estimate)
           end
         end
         expanded << history
@@ -71,7 +71,11 @@ class BurndownGraph
         today = Date::today
         while(last.date < date) do
           next_date = last.date.tomorrow
-          self << @@date_and_total.new(next_date, next_date < today ? last.total_todo : nil)
+          if next_date < today
+            self << @@date_and_total.new(next_date, last.total_todo, last.total_estimate)
+          else
+            self << @@date_and_total.new(next_date, nil, nil)
+          end
         end
       end
     end

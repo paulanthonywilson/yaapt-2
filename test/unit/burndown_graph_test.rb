@@ -4,7 +4,7 @@ require 'burndown_graph'
 
 class BurndownGraphTest < Test::Unit::TestCase
 
-  StubReleaseHistory = Struct.new(:date, :total_todo)
+  StubReleaseHistory = Struct.new(:date, :total_todo, :total_estimate)
 
   def setup
     @release = releases(:tea_and_biscuits)
@@ -13,8 +13,8 @@ class BurndownGraphTest < Test::Unit::TestCase
     flexmock(Gruff::AllLabelLine, :new=>@gruff)
     @testee = BurndownGraph.new
   end
-  
- 
+
+
 
   should "have a title" do
     @testee.title = "hello title"
@@ -25,28 +25,32 @@ class BurndownGraphTest < Test::Unit::TestCase
   should "graph history dates against estimate totals" do
     @testee.histories=histories(['2009-03-1', 5], ['2009-03-2', 6], ['2009-03-3', 7])
     @testee.release_date = Date::civil(2009,3,3)
-    @gruff.should_receive(:data).with("burndown", [5,6,7]).once
+    @gruff.should_receive(:data).with("todo", [5,6,7]).once
+    @gruff.should_receive(:data).with("totals", [15,16,17]).once
     @testee.to_gruff   
   end
 
   should "fill gaps in history dates with the preceding total" do
     @testee.histories=histories(['2009-03-1', 5],  ['2009-03-3', 7])
     @testee.release_date = Date::civil(2009,3,3)
-    @gruff.should_receive(:data).with("burndown", [5,5,7]).once
+    @gruff.should_receive(:data).with("todo", [5,5,7]).once
+    @gruff.should_receive(:data).with("totals", [15,15,17]).once
     @testee.to_gruff   
   end
 
-  should "fill up to the release date with nil totals" do
+  should "fill up to the release date with nil totals and  estimates" do
     @testee.histories=histories(['2009-03-1', 5], ['2009-03-2', 6])
     @testee.release_date = Date::civil(2009,3,4)
-    @gruff.should_receive(:data).with("burndown", [5,6,nil,nil]).once
+    @gruff.should_receive(:data).with("todo", [5,6,nil,nil]).once
+    @gruff.should_receive(:data).with("totals", [15,16,nil, nil]).once
     @testee.to_gruff
   end
 
   should "only graph up to the release date" do
     @testee.histories=histories(['2009-03-1', 5], ['2009-03-2', 6], ['2009-03-3', 7])
     @testee.release_date = Date::civil(2009,3,2)
-    @gruff.should_receive(:data).with("burndown", [5,6]).once
+    @gruff.should_receive(:data).with("todo", [5,6]).once
+    @gruff.should_receive(:data).with("totals", [15,16]).once
     @testee.to_gruff   
   end  
 
@@ -56,19 +60,19 @@ class BurndownGraphTest < Test::Unit::TestCase
     @gruff.should_receive(:labels=).with(0=>'01 Mar 2009', 3=>'04 Mar 2009', 6=>'07 Mar 2009', 8=>'09 Mar 2009').once
     @testee.to_gruff
   end
-  
+
   should "be ok with just one datapoint" do
     @testee.histories=histories(['2009-03-1', 1])
     @testee.release_date = Date::civil(2009,3,1)
     @testee.to_gruff
   end
-  
+
   should "be ok with no data" do
     @testee.histories=[]
     @testee.release_date = Date::civil(2009,3,1)
     @testee.to_gruff
   end
-  
+
   should "initialise with a block" do
     @gruff.should_receive(:title=).with("hello title").once
     t = 'hello title'
@@ -76,37 +80,41 @@ class BurndownGraphTest < Test::Unit::TestCase
       g.title=t
     end.to_gruff
   end
-  
+
   should "fill to yesterday with latest previous history date" do
     flexmock Date, :today=>Date::civil(2009,3,3)
     @testee.histories=histories(['2009-03-1', 1])
     @testee.release_date = Date::civil(2009,3,4)
-    @gruff.should_receive(:data).with("burndown", [1,1,nil,nil]).once
+    @gruff.should_receive(:data).with("todo", [1,1,nil,nil]).once
+    @gruff.should_receive(:data).with("totals", [11,11,nil,nil]).once
     @testee.to_gruff
   end
-  
+
   should "only graph from start date, if set" do
     @testee.histories=histories(['2009-03-1', 5], ['2009-03-2', 6], ['2009-03-3', 7])
     @testee.start_date = Date::civil(2009,3,2)
     @testee.release_date = Date::civil(2009,3,3)
-    @gruff.should_receive(:data).with("burndown", [6,7]).once
+    @gruff.should_receive(:data).with("todo", [6,7]).once
+    @gruff.should_receive(:data).with("totals", [16,17]).once
     @testee.to_gruff   
-    
+
   end
-  
+
   should "set the minimum value to 0 after setting the histories" do
     @testee.histories=histories(['2009-03-1', 1])
     @testee.release_date = Date::civil(2009,3,1)
-    @gruff.should_receive(:data).with("burndown", [1]).ordered.once
+    @gruff.should_receive(:data).with("todo", [1]).ordered.once
+    @gruff.should_receive(:data).with("totals", [11]).ordered.once
     @gruff.should_receive(:minimum_value=).with(0).ordered.once
     @testee.to_gruff
   end
-  
 
-private
+
+  private
+
 
   def histories(*short_histories)
-    short_histories.map{|short_history| StubReleaseHistory.new Date::strptime(short_history[0]), short_history[1]}
+    short_histories.map{|short_history| assert_equal 2, short_history.size; StubReleaseHistory.new Date::strptime(short_history[0]), short_history[1], short_history[1] + 10}
   end
 
 
