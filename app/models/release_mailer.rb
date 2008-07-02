@@ -11,6 +11,13 @@ class ReleaseMailer < ActionMailer::Base
     from       'yaapt'
     sent_on    Time::now
 
+    part(:content_type=>'image/jpeg') do |p|
+      p.body = release.to_burndown_graph(450, 'jpeg')   
+      p.transfer_encoding = "base64"
+      p.content_disposition = "inline; filename ='burndown.jpg'"
+    end
+
+
     part :content_type=> 'text/html' do |p|    
       p.body=%(<html><body>
       <h1>#{release.name} - status summary</h1>
@@ -20,14 +27,15 @@ class ReleaseMailer < ActionMailer::Base
       <br/>
       Done: <span id='done'>#{release.total_done}</span></p>
       <br/>
+      <h2>Done</h2>
+      #{table_for(release, 'done')}
+      <h2>In progress</h2>
+      #{table_for(release, 'in_progress')}
+      <h2>Unstarted</h2>
+      #{table_for(release, 'unstarted')}
       </body></html>)
     end
 
-    part(:content_type=>'image/jpeg') do |p|
-      p.body = release.to_burndown_graph(450, 'jpeg')   
-      p.transfer_encoding = "base64"
-      p.content_disposition = "inline; filename ='burndown.jpg'"
-    end
 
 
     part :content_type=> 'text/html' do |part|    
