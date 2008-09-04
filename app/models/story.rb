@@ -1,5 +1,5 @@
 class Story < ActiveRecord::Base  
-  validates_presence_of :title
+  validates_presence_of :body
   validates_inclusion_of :status, :in=>['unstarted', 'in_progress', 'done']
   validates_numericality_of :estimate, :allow_nil=>true
   belongs_to :release

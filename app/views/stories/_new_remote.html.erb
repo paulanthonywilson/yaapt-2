@@ -8,11 +8,6 @@
 <% form_remote_for @story, :html=>{:class=>'remote_story'} do |f| %>
 	<%= f.hidden_field :release_id %>
 	<div id="left_fields">
-	<div id="title">
-		<%= f.label :title, "Title"%>
-		<%= f.text_field :title, :size=>61, :tablindex=>1 %>
-	</div>
-		<br/> 
 	<div id="story">
 	<%= f.label :body, "Story"%> 
 	<%= f.text_area :body, :cols=>60, :rows=>4, :tabindex=>3 %>

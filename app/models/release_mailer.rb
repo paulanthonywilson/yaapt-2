@@ -66,7 +66,7 @@ class ReleaseMailer < ActionMailer::Base
   
   def story_rows(stories)
     stories.inject("") do |memo, story|
-      memo << "<tr id='story_#{story.id}'><td align='right' width='70px'>#{story.estimate}</td><td>#{story.title}</td></tr>"
+      memo << "<tr id='story_#{story.id}'><td align='right' width='70px'>#{story.estimate}</td><td>#{story.body}</td></tr>"
     end
   end
 

@@ -2,7 +2,7 @@
 	<div class="top">
 	<div id='<%=dom_id(story, 'drag_handle')%>' class='handle'><%=image_tag('handle.png', :width=>'18px') %></div>
   <div class='field estimate'><%= h story.estimate %></div>
-  <div class='field title'><%= h story.title %></div>
+  <div class='field title'></div>
 	</div>
 	<div class= "bottom">
 	  <div class='edit'><%= link_to image_tag('edit.png', :alt=>'edit'), edit_story_path(story)%></div>

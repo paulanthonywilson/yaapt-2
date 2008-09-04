@@ -1,10 +1,6 @@
 <%= errors_for :story %> 
 <% form_for @story, :class=>'input' do |f|%>   
 <div>
-	<%= f.label :title, "Title"%>
-	<%= f.text_field :title, :size=>80  %>  
-</div> 
-<div>
 	<%= f.label :body, "Story"%> 
 	<%= f.text_area :body, :cols=>80, :rows=>10 %>
 </div>  

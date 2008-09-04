@@ -1,31 +1,27 @@
 make_tea:
-  title: Make a pot of tea 
-  body: As  a tea drinker I want a cup of tea in order that I may be refreshed
+  body: Make a pot of tea Make a pot of tea 
   estimate: 1
   status: unstarted
   release: tea_and_biscuits
 make_coffee:
-  title: Brew some coffee 
-  body: Mmmm coffee
+  body: Brew some coffee 
   estimate: 2
   status: in_progress
   release: tea_and_biscuits
 biscuits:
-  title: Lay out some biscuits
+  body: Lay out some biscuits
   estimate: 2
-  body: yum yum yum
   status: done
   release: tea_and_biscuits
 slaughter_ox:
-  title: Slaughter Ox
+  body: Slaughter Ox
   estimate: 6
   body: Kill the cow
 mix_cocktails:
-  title: Mix cocktails
+  body: Mix cocktails
   estimate: 5
-  body: Shake shake stir
   release: dinner_party
 song_and_dance:
-  title: Song and dance
+  body: Song and dance
   estimate: 12
   body: Push pineapple, shake a tree

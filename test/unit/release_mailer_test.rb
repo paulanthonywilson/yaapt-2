@@ -7,7 +7,7 @@ class ReleaseMailerTest < ActionMailer::TestCase
   class << self
     def should_list_story_in_table_for_status(status, story_symbol)
       should "list #{status} items in their own table" do
-        %w(estimate title).each do |attribute|
+        %w(estimate body).each do |attribute|
           story = stories(story_symbol)
           assert_select "table##{status} tr#story_#{story.id} td", {:text=>story.send(attribute)},attribute
         end
