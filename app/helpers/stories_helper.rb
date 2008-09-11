@@ -16,12 +16,12 @@ module StoriesHelper
 
   def release_description_cell(story, release)
     unless release
-      "<div id='#{dom_id(story, 'release')}'>#{release_description_content(story)}</div>"
+      "<div id='#{dom_id(story, 'release')}' class='release_description'>#{release_description_content(story)}</div>"
     end
   end
   
   def release_description_content(story)
-    link_to story.release.description, release_stories_path(story.release) if story.release
+    return link_to story.release.description, release_stories_path(story.release) if story.release
   end
   
   def stories_container_id

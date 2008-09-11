@@ -45,7 +45,7 @@ class StoriesHelperTest < ActiveSupport::TestCase
     end
 
     should "be empty cell if story does not belong to release" do
-      assert_equal "<div id='release_story_33'></div>", 
+      assert_match /<div id='release_story_33'.*?><\/div>/, 
         release_description_cell(flexmock(Story.new, :id=>33, :release=>nil), nil)
     end
 

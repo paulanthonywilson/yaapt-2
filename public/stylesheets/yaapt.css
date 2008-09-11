@@ -133,11 +133,11 @@ a:hover{
 }
 
 .stripy .stripe {
-/*	height: 50px;*/
 }
 
 .story .top {
 	border-bottom: thin solid #A3A3A3;
+	height: 20px;
 }
 
 .story .bottom{
@@ -164,7 +164,10 @@ div.in_progress{
 	border-left: solid yellow;
 }
 
-
+.story .release_description{
+	background: pink;
+	display: block;
+}
 
 .new_story label, .edit_story label, .edit_release label, .new_release label{
 	width: 90px;
@@ -181,13 +184,12 @@ div.in_progress{
 	display: block;
 	border-left: thin solid #A3A3A3;
 	float: left;
-	height: 40px;
 }
-.story .handle,.story .edit,.story .destroy{
+
+.edit, .destroy{
 	width: 21px;
 	padding:  2px 5px;
-	float:left;
-	height: 40px;
+	float: right;
 	border-left: thin solid #A3A3A3;
 }
 
@@ -198,8 +200,11 @@ div.in_progress{
 
 .stories .story{
 	border-bottom: thin solid #292929;
-	
-}
+	width: 200px;
+	margin: 20px;
+	height: 120px;
+	float: left;
+	}
 
 .stories .title{
 }
@@ -214,12 +219,18 @@ div.in_progress{
 	
 }
 
-.stories .status, .stories .advance_button {
+.stories .status {
 	width: 80px;	
 	display: block;
 	height:25px;	
 }
 
+.stories .buttons{
+ float: right;
+	}
+.stories .advance_button{
+	float: left;
+}
 
 .stories .advance_button a{
 	display: block;
@@ -234,7 +245,6 @@ div.in_progress{
 	width: 50px;
 	margin-right: 10px;
 	display: block;
-	float:left;
 }
 
 .remote_story #title_div{
