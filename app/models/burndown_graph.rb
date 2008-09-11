@@ -13,9 +13,10 @@ class BurndownGraph
 
     return g if @histories.empty?
 
-    histories_to_graph = GraphedHistories.new(@histories).
-    constrained_to_release_date(@release_date).
-    constrained_to_start_date(@start_date)
+    histories_to_graph = 
+      GraphedHistories.new(@histories).
+      constrained_to_release_date(@release_date).
+      constrained_to_start_date(@start_date)
     g.data("todo", histories_to_graph.map(&:total_todo))
     g.data("totals", histories_to_graph.map(&:total_estimate))
     g.minimum_value=0
