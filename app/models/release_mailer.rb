@@ -38,16 +38,6 @@ class ReleaseMailer < ActionMailer::Base
 
 
 
-    part :content_type=> 'text/html' do |part|    
-      part.body=%(<html><body>
-      <h2>Done</h2>
-      #{table_for(release, 'done')}
-      <h2>In progress</h2>
-      #{table_for(release, 'in_progress')}
-      <h2>Unstarted</h2>
-      #{table_for(release, 'unstarted')}
-      </body></html>)
-    end
 
   end
   

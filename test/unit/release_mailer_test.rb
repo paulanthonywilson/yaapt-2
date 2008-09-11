@@ -29,7 +29,7 @@ class ReleaseMailerTest < ActionMailer::TestCase
     end
 
     should "be in two parts" do
-      assert_equal 3,  @message.parts.size
+      assert_equal 2,  @message.parts.size
     end
 
   end
