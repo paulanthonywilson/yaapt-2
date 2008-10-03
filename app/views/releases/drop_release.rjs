@@ -6,6 +6,5 @@ page << <<-EOS
   $$('##{dom_id(@story, 'release')}').each(function(element){
     element.update('#{release_description_content(@story)}')
   })
-  restripe('story_list')
 EOS
 rjs_update_total_todo page, @previous_release
